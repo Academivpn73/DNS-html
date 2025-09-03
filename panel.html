@@ -97,9 +97,9 @@
   <!-- بخش 2: DNS دانلود -->
   <section class="gaming-card animate__animated animate__fadeIn animate__delay-1s">
     <h2 class="text-3xl mb-6 text-green-300">📥 DNS دانلود</h2>
-    <p>DNSهای آماده برای دور زدن تحریم:</p>
+    <p>DNSهای تحریم‌شکن تصادفی:</p>
     <div id="downloadList" class="mt-3"></div>
-    <button class="btn mt-4" onclick="loadDownloadDNS()">نمایش DNS</button>
+    <button class="btn mt-4" onclick="loadDownloadDNS()">DNS جدید بده</button>
   </section>
 
   <!-- بخش 3: تست DNS -->
@@ -111,6 +111,9 @@
   </section>
 
   <script>
+    // ================================
+    // تولید DNS تصادفی
+    // ================================
     function randomIPv4(country) {
       let start = country === "us" ? [8, 9] : [2, 5];
       return start[Math.floor(Math.random()*start.length)] + "." +
@@ -152,37 +155,53 @@
       alert("✅ کپی شد: " + text);
     }
 
+    // ================================
+    // DNS دانلود (هر بار جدید)
+    // ================================
     function loadDownloadDNS(){
       let list = document.getElementById("downloadList");
       list.innerHTML = "";
-      let dnsArray = [
-        {ip:"8.8.8.8", type:"IPv4"},
-        {ip:"1.1.1.1", type:"IPv4"},
-        {ip:"2606:4700:4700::1111", type:"IPv6"}
-      ];
-      dnsArray.forEach(dns=>{
+
+      let fakeDownloadDNS = [];
+      for(let i=0;i<3;i++){
+        let ip = "104." + Math.floor(Math.random()*255) + "." +
+                 Math.floor(Math.random()*255) + "." +
+                 Math.floor(Math.random()*255);
+        fakeDownloadDNS.push({ip: ip, type: "IPv4"});
+      }
+
+      fakeDownloadDNS.forEach(dns=>{
         let div = document.createElement("div");
         div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
-        div.innerHTML=`${dns.ip} (${dns.type}) 
+        div.innerHTML=`🌍 ${dns.ip} (${dns.type}) 
           <button class="btn ml-2" onclick="copyToClipboard('${dns.ip}')">Copy</button>`;
         list.appendChild(div);
       });
     }
 
+    // ================================
+    // تست پینگ DNS ایرانی با دیتاسنتر
+    // ================================
     function testDNS(){
       let testList = document.getElementById("testList");
       testList.innerHTML = "";
-      let fakeDNS = [];
+
+      let datacenters = [
+        "رادار شکن","آلفا نت","گیم سرور","توربو نت",
+        "HyperDNS","WarpX","SharkNet","DragonHost",
+        "PingMaster","IranServer","FireDNS","NitroNet",
+        "ShadowNet","FastPing","GalaxyHost","BlackNet",
+        "ProXyKing","RocketDNS","UltraHost","NoLagNet"
+      ];
+
       for(let i=0;i<20;i++){
-        fakeDNS.push("5."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255));
-      }
-      fakeDNS.forEach(ip=>{
+        let ip = "5."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255);
         let ping = Math.floor(Math.random()*80)+10;
         let div=document.createElement("div");
         div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
-        div.innerHTML=`${ip} [IPv4 - 🇮🇷] ⏱ پینگ: ${ping}ms`;
+        div.innerHTML=`${datacenters[i]} ${ip} [IPv4 - 🇮🇷] ⏱ پینگ: ${ping}ms`;
         testList.appendChild(div);
-      });
+      }
     }
   </script>
 
