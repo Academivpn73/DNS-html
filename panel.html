@@ -4,80 +4,110 @@
   <meta charset="UTF-8">
   <title>Academi DNS Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <style>
     body {
       font-family: "Orbitron", sans-serif;
-      background: #fff;
-      color: #111;
+      background: radial-gradient(circle at top, #0a0a0a, #000);
+      color: #eee;
     }
     .gaming-card {
-      background: linear-gradient(145deg, #1a1a1a, #2c2c2c);
-      color: #0f0;
+      background: rgba(20, 20, 20, 0.9);
+      border: 2px solid #0f0;
       border-radius: 20px;
-      box-shadow: 0 0 25px rgba(0, 255, 0, 0.6);
-      padding: 20px;
-      margin: 15px 0;
+      box-shadow: 0 0 25px rgba(0, 255, 100, 0.6);
+      padding: 25px;
+      margin: 20px 0;
+      transition: transform 0.3s ease;
+    }
+    .gaming-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 255, 150, 0.9);
     }
     .btn {
-      background: #0f0;
+      background: linear-gradient(90deg, #00ff88, #00ffcc);
       color: #000;
       padding: 10px 20px;
       border-radius: 12px;
       font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
+      box-shadow: 0 0 15px #00ff88;
     }
     .btn:hover {
-      background: #0a0;
-      color: #fff;
+      background: linear-gradient(90deg, #00cc66, #00ffaa);
+      color: #111;
+      box-shadow: 0 0 25px #00ffaa;
+    }
+    .dns-box {
+      animation: fadeInUp 0.7s ease;
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body class="p-6">
 
-  <h1 class="text-4xl font-extrabold text-center mb-8">🎮 Academi DNS Panel 🎮</h1>
+  <h1 class="text-5xl font-extrabold text-center mb-10 text-green-400 animate__animated animate__pulse animate__infinite">
+    🎮 Academi DNS Panel 🎮
+  </h1>
 
   <!-- بخش 1: تولید DNS -->
-  <section class="gaming-card">
-    <h2 class="text-2xl mb-4">Generate DNS</h2>
-    <label>چند تا DNS میخوای؟</label>
-    <input id="dnsCount" type="number" min="1" value="3" class="text-black p-1 rounded"><br><br>
+  <section class="gaming-card animate__animated animate__fadeIn">
+    <h2 class="text-3xl mb-6 text-green-300">⚡ Generate DNS</h2>
+    
+    <div class="space-y-4">
+      <div>
+        <label>چند تا DNS میخوای؟</label>
+        <input id="dnsCount" type="number" min="1" value="3" class="text-black p-1 rounded">
+      </div>
 
-    <label>کشور:</label>
-    <select id="dnsCountry" class="text-black p-1 rounded">
-      <option value="us">🇺🇸 آمریکا</option>
-      <option value="ir">🇮🇷 ایران</option>
-    </select><br><br>
+      <div>
+        <label>کشور:</label>
+        <select id="dnsCountry" class="text-black p-1 rounded">
+          <option value="us">🇺🇸 آمریکا</option>
+          <option value="ir">🇮🇷 ایران</option>
+        </select>
+      </div>
 
-    <label>نوع IP:</label>
-    <select id="dnsType" class="text-black p-1 rounded">
-      <option value="ipv4">IPv4</option>
-      <option value="ipv6">IPv6</option>
-    </select><br><br>
+      <div>
+        <label>نوع IP:</label>
+        <select id="dnsType" class="text-black p-1 rounded">
+          <option value="ipv4">IPv4</option>
+          <option value="ipv6">IPv6</option>
+        </select>
+      </div>
 
-    <label>برای چه گیمی میخوای؟</label>
-    <input id="dnsGame" type="text" placeholder="مثلا PUBG" class="text-black p-1 rounded"><br><br>
+      <div>
+        <label>برای چه گیمی میخوای؟</label>
+        <input id="dnsGame" type="text" placeholder="مثلا PUBG" class="text-black p-1 rounded">
+      </div>
+    </div>
 
-    <button class="btn" onclick="generateDNS()">Generate DNS</button>
-    <button class="btn" onclick="generateDNS()">Regenerate DNS</button>
+    <div class="mt-6 flex gap-3">
+      <button class="btn" onclick="generateDNS()">Generate DNS</button>
+      <button class="btn" onclick="generateDNS()">Regenerate DNS</button>
+    </div>
 
-    <div id="dnsList" class="mt-4"></div>
+    <div id="dnsList" class="mt-6"></div>
   </section>
 
   <!-- بخش 2: DNS دانلود -->
-  <section class="gaming-card">
-    <h2 class="text-2xl mb-4">DNS دانلود 📥</h2>
-    <p>این بخش DNSهای آماده برای دانلود یا تحریم‌شکن رو نشون میده:</p>
+  <section class="gaming-card animate__animated animate__fadeIn animate__delay-1s">
+    <h2 class="text-3xl mb-6 text-green-300">📥 DNS دانلود</h2>
+    <p>DNSهای آماده برای دور زدن تحریم:</p>
     <div id="downloadList" class="mt-3"></div>
-    <button class="btn" onclick="loadDownloadDNS()">نمایش DNS</button>
+    <button class="btn mt-4" onclick="loadDownloadDNS()">نمایش DNS</button>
   </section>
 
   <!-- بخش 3: تست DNS -->
-  <section class="gaming-card">
-    <h2 class="text-2xl mb-4">Test DNS ⚡</h2>
+  <section class="gaming-card animate__animated animate__fadeIn animate__delay-2s">
+    <h2 class="text-3xl mb-6 text-green-300">⚡ Test DNS</h2>
     <p>20 تا DNS ایرانی برای تست:</p>
     <div id="testList" class="mt-3"></div>
-    <button class="btn" onclick="testDNS()">پینگ بگیر</button>
+    <button class="btn mt-4" onclick="testDNS()">پینگ بگیر</button>
   </section>
 
   <script>
@@ -106,7 +136,7 @@
       for(let i=0; i<count; i++){
         let ip = type === "ipv4" ? randomIPv4(country) : randomIPv6(country);
         let div = document.createElement("div");
-        div.className = "p-3 border rounded mb-2 bg-black text-green-400";
+        div.className = "dns-box p-4 border rounded mb-3 bg-black text-green-400 shadow-lg";
         div.innerHTML = `
           <b>${ip}</b> [${type.toUpperCase()} - ${country.toUpperCase()}] <br>
           📶 پینگ: ${Math.floor(Math.random()*60+20)}ms <br>
@@ -119,7 +149,7 @@
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text);
-      alert("کپی شد: " + text);
+      alert("✅ کپی شد: " + text);
     }
 
     function loadDownloadDNS(){
@@ -132,7 +162,7 @@
       ];
       dnsArray.forEach(dns=>{
         let div = document.createElement("div");
-        div.className="p-2 bg-black text-green-400 rounded mb-2";
+        div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
         div.innerHTML=`${dns.ip} (${dns.type}) 
           <button class="btn ml-2" onclick="copyToClipboard('${dns.ip}')">Copy</button>`;
         list.appendChild(div);
@@ -149,7 +179,7 @@
       fakeDNS.forEach(ip=>{
         let ping = Math.floor(Math.random()*80)+10;
         let div=document.createElement("div");
-        div.className="p-2 bg-black text-green-400 rounded mb-2";
+        div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
         div.innerHTML=`${ip} [IPv4 - 🇮🇷] ⏱ پینگ: ${ping}ms`;
         testList.appendChild(div);
       });
