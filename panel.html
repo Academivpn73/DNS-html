@@ -1,235 +1,393 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>Academi DNS Panel</title>
+  <meta charset="UTF-8" />
+  <title>Academi DNS Panel — Static + Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&display=swap');
-
-    body {
-      font-family: "Orbitron", sans-serif;
-      color: #eee;
-      margin: 0;
-      overflow-x: hidden;
-    }
-
-    /* بک‌گراند متحرک نئونی */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle, rgba(0,255,150,0.2) 0%, rgba(0,0,0,0.95) 80%),
-                  repeating-linear-gradient(45deg, rgba(0,255,200,0.1) 0px, rgba(0,255,200,0.1) 2px, transparent 2px, transparent 40px);
-      animation: bgMove 15s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes bgMove {
-      from { background-position: 0 0; }
-      to { background-position: 300px 300px; }
-    }
-
-    .gaming-card {
-      background: rgba(20, 20, 20, 0.95);
-      border: 2px solid #0f0;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(0, 255, 100, 0.6);
-      padding: 25px;
-      margin: 20px 0;
-      transition: transform 0.3s ease;
-    }
-    .gaming-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 40px rgba(0, 255, 150, 0.9);
-    }
-
-    .btn {
-      background: linear-gradient(90deg, #00ff88, #00ffcc);
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 15px #00ff88;
-    }
-    .btn:hover {
-      background: linear-gradient(90deg, #00cc66, #00ffaa);
-      color: #111;
-      box-shadow: 0 0 25px #00ffaa;
-    }
-
-    .telegram-links a {
-      color: #00ffcc;
-      font-weight: bold;
-      margin: 0 10px;
-      text-decoration: none;
-      animation: pulseGlow 2s infinite alternate;
-    }
-    .telegram-links a:hover {
-      text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffaa;
-    }
-    @keyframes pulseGlow {
-      from { text-shadow: 0 0 10px #00ffaa; }
-      to { text-shadow: 0 0 25px #00ffcc, 0 0 50px #00ffaa; transform: scale(1.05); }
-    }
-
-    .dns-box { animation: fadeInUp 0.7s ease; }
-    @keyframes fadeInUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+    :root{--g:#00ff88}
+    body{font-family:system-ui,Segoe UI,Roboto;background:#0d0d0d;color:#eee}
+    .card{background:#131313;border:1.5px solid var(--g);border-radius:18px;box-shadow:0 0 18px rgba(0,255,136,.35);padding:20px}
+    .btn{background:linear-gradient(90deg,var(--g),#00ffc6);color:#000;padding:10px 16px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 0 12px var(--g)}
+    .btn:hover{filter:brightness(.95)}
+    .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    label{min-width:110px}
+    select,input{background:#fff;color:#000;padding:8px 10px;border-radius:8px}
+    .dns-item{border:1px solid var(--g);border-radius:12px;background:#000;padding:10px 12px}
+    .muted{color:#a6f3d1;font-size:.92rem}
+    .warn{color:#ffd866}
+    a{color:#9ef}
+    .grid{display:grid;gap:14px}
+    @media(min-width:768px){.grid-2{grid-template-columns:1fr 1fr}}
   </style>
 </head>
-<body class="p-6">
-
-  <h1 class="text-5xl font-extrabold text-center mb-2 text-green-400 animate__animated animate__pulse animate__infinite">
-    🎮 Academi DNS Panel 🎮
-  </h1>
-  <p class="text-center text-lg text-green-300 mb-8 telegram-links">
-    Telegram: <a href="https://t.me/Academi_vpn" target="_blank">@Academi_vpn</a> |
-    Admin By: <a href="https://t.me/MahdiAGM0" target="_blank">@MahdiAGM0</a>
+<body class="p-4 md:p-6">
+  <h1 class="text-3xl md:text-4xl font-extrabold text-center mb-2 text-[var(--g)]">🎮 Academi DNS Panel</h1>
+  <p class="text-center muted mb-6">Telegram:
+    <a href="https://t.me/Academi_vpn" target="_blank">@Academi_vpn</a> |
+    Admin: <a href="https://t.me/MahdiAGM0" target="_blank">@MahdiAGM0</a>
   </p>
 
-  <!-- بخش 1: Generate DNS -->
-  <section class="gaming-card">
-    <h2 class="text-3xl mb-6 text-green-300">⚡ Generate DNS</h2>
-    <div class="space-y-4">
-      <div><label>چند تا DNS میخوای؟</label><input id="dnsCount" type="number" min="1" value="3" class="text-black p-1 rounded"></div>
-      <div><label>کشور:</label>
-        <select id="dnsCountry" class="text-black p-1 rounded">
-          <option value="ir">🇮🇷 ایران</option><option value="us">🇺🇸 آمریکا</option>
-          <option value="de">🇩🇪 آلمان</option><option value="uk">🇬🇧 انگلیس</option>
-          <option value="fr">🇫🇷 فرانسه</option><option value="ca">🇨🇦 کانادا</option>
-          <option value="jp">🇯🇵 ژاپن</option><option value="kr">🇰🇷 کره جنوبی</option>
-          <option value="in">🇮🇳 هند</option><option value="ru">🇷🇺 روسیه</option>
-          <option value="tr">🇹🇷 ترکیه</option><option value="br">🇧🇷 برزیل</option>
+  <!-- ====== Gaming Section ====== -->
+  <section class="card mb-6">
+    <h2 class="text-2xl md:text-3xl mb-4 text-[var(--g)]">⚡ Generate DNS (Gaming)</h2>
+    <div class="grid grid-2">
+      <div class="row">
+        <label>کشور:</label>
+        <select id="gCountry">
+          <option value="ir">🇮🇷 ایران</option>
+          <option value="us">🇺🇸 آمریکا</option>
+          <option value="de">🇩🇪 آلمان</option>
+          <option value="uk">🇬🇧 انگلیس</option>
+          <option value="fr">🇫🇷 فرانسه</option>
+          <option value="ca">🇨🇦 کانادا</option>
+          <option value="jp">🇯🇵 ژاپن</option>
+          <option value="kr">🇰🇷 کره‌جنوبی</option>
+          <option value="in">🇮🇳 هند</option>
+          <option value="ru">🇷🇺 روسیه</option>
+          <option value="tr">🇹🇷 ترکیه</option>
+          <option value="br">🇧🇷 برزیل</option>
+          <option value="global">🌍 Global</option>
         </select>
       </div>
-      <div><label>نوع IP:</label><select id="dnsType" class="text-black p-1 rounded"><option value="ipv4">IPv4</option><option value="ipv6">IPv6</option></select></div>
-      <div>
-        <label>گیم مورد نظر:</label>
-        <select id="dnsGame" class="text-black p-1 rounded w-64">
+      <div class="row">
+        <label>نوع IP:</label>
+        <select id="gIPver">
+          <option value="ipv4">IPv4</option>
+          <option value="ipv6">IPv6</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>از لیست ثابت:</label>
+        <input id="gStaticCount" type="number" min="0" value="6" style="width:120px" />
+      </div>
+      <div class="row">
+        <label>ژنراتوری:</label>
+        <input id="gGenCount" type="number" min="0" value="6" style="width:120px" />
+      </div>
+
+      <div class="row">
+        <label>بازی:</label>
+        <select id="gGame">
           <option>PUBG</option><option>Fortnite</option><option>Valorant</option><option>CS:GO</option>
           <option>Call of Duty</option><option>FIFA 23</option><option>Apex Legends</option><option>Minecraft</option>
           <option>Overwatch 2</option><option>Dota 2</option><option>League of Legends</option><option>Roblox</option>
-          <option>Rainbow Six Siege</option><option>Warzone</option><option>Battlefield</option><option>Rocket League</option>
-          <option>World of Warcraft</option><option>GTA Online</option><option>Cyberpunk 2077</option><option>Elden Ring</option>
-          <option>Fall Guys</option><option>Among Us</option><option>Clash Royale</option><option>Clash of Clans</option>
-          <option>Mobile Legends</option><option>Free Fire</option><option>Diablo IV</option><option>Smite</option>
-          <option>Rust</option><option>ARK</option><option>Tarkov</option><option>Metin2</option>
-          <option>Crossfire</option><option>Lineage II</option><option>Halo Infinite</option><option>NBA 2K</option>
-          <option>PES 2023</option><option>Assassin’s Creed</option><option>Far Cry</option><option>Forza Horizon</option>
-          <option>Gran Turismo</option><option>Monster Hunter</option><option>Starfield</option><option>DayZ</option>
-          <option>Destiny 2</option><option>Guild Wars 2</option><option>Lost Ark</option>
+          <option>Rainbow Six Siege</option><option>Warzone</option><option>Rocket League</option>
           <option value="other">❓ بازی من تو لیست نیست</option>
         </select>
-        <input id="otherGame" type="text" placeholder="اسم بازی خودت رو وارد کن" class="hidden text-black p-1 rounded mt-2">
+        <input id="gGameOther" class="hidden" placeholder="اسم بازی..." />
       </div>
-      <div>
+
+      <div class="row">
         <label>دستگاه:</label>
-        <select id="dnsDevice" class="text-black p-1 rounded">
-          <option>PC</option><option>Mobile (Android / iOS)</option>
+        <select id="gDevice">
+          <option>PC</option><option>Mobile (Android/iOS)</option>
           <option>PlayStation 4</option><option>PlayStation 5</option>
           <option>Xbox One</option><option>Xbox Series X</option><option>Nintendo Switch</option>
         </select>
       </div>
     </div>
-    <div class="mt-6 flex gap-3">
-      <button class="btn" onclick="generateDNS()">Generate DNS</button>
-      <button class="btn" onclick="generateDNS()">Regenerate DNS</button>
+
+    <div class="row mt-4">
+      <button class="btn" onclick="generateGaming()">Generate</button>
+      <button class="btn" onclick="generateGaming()">Regenerate</button>
+      <span class="muted">* تعداد دلخواه وارد کن؛ توجه کن خروجی خیلی زیاد ممکنه صفحه رو سنگین کنه.</span>
     </div>
-    <div id="dnsList" class="mt-6"></div>
+
+    <div id="gamingOut" class="grid mt-5"></div>
   </section>
 
-  <!-- بخش 2: Download DNS -->
-  <section class="gaming-card">
-    <h2 class="text-3xl mb-6 text-green-300">📥 DNS دانلود</h2>
-    <p>DNSهای تحریم‌شکن با پینگ تقریبی:</p>
-    <div id="downloadList" class="mt-3"></div>
-    <button class="btn mt-4" onclick="loadDownloadDNS()">DNS جدید بده</button>
-  </section>
+  <!-- ====== Download / Unfiltered Section ====== -->
+  <section class="card mb-10">
+    <h2 class="text-2xl md:text-3xl mb-4 text-[var(--g)]">📥 DNS دانلود (Unfiltered / Anti-censorship-friendly)</h2>
+    <div class="grid grid-2">
+      <div class="row">
+        <label>کشور/حوزه:</label>
+        <select id="dCountry">
+          <option value="global">🌍 Global</option>
+          <option value="ir">🇮🇷 ایران</option>
+          <option value="us">🇺🇸 آمریکا</option>
+          <option value="de">🇩🇪 آلمان</option>
+          <option value="uk">🇬🇧 انگلیس</option>
+          <option value="fr">🇫🇷 فرانسه</option>
+          <option value="ca">🇨🇦 کانادا</option>
+          <option value="jp">🇯🇵 ژاپن</option>
+          <option value="kr">🇰🇷 کره‌جنوبی</option>
+          <option value="in">🇮🇳 هند</option>
+          <option value="ru">🇷🇺 روسیه</option>
+          <option value="tr">🇹🇷 ترکیه</option>
+          <option value="br">🇧🇷 برزیل</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>نوع IP:</label>
+        <select id="dIPver">
+          <option value="ipv4">IPv4</option>
+          <option value="ipv6">IPv6</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>تعداد نمایش:</label>
+        <input id="dCount" type="number" min="1" value="10" style="width:120px" />
+      </div>
+    </div>
 
-  <!-- بخش 3: Test DNS -->
-  <section class="gaming-card">
-    <h2 class="text-3xl mb-6 text-green-300">⚡ Test DNS</h2>
-    <p>20 DNS آماده برای تست:</p>
-    <div id="testList" class="mt-3"></div>
-    <button class="btn mt-4" onclick="testDNS()">پینگ بگیر</button>
-  </section>
+    <div class="row mt-4">
+      <button class="btn" onclick="showDownload()">نمایش DNS دانلود</button>
+      <span class="muted">* این بخش فقط از لیست‌های معتبر و ثابت استفاده می‌کند.</span>
+    </div>
 
-  <!-- بخش 4: Custom DNS Ping -->
-  <section class="gaming-card">
-    <h2 class="text-3xl mb-6 text-green-300">📡 پینگ DNS دلخواه</h2>
-    <input id="customDNS" type="text" placeholder="IPv4 یا IPv6" class="text-black p-1 rounded w-64">
-    <button class="btn mt-2" onclick="pingCustomDNS()">پینگ</button>
-    <div id="customPingResult" class="mt-3 text-green-400"></div>
+    <div id="downloadOut" class="grid mt-5"></div>
   </section>
 
   <script>
-    document.getElementById("dnsGame").addEventListener("change", function(){
-      if(this.value === "other") document.getElementById("otherGame").classList.remove("hidden");
-      else document.getElementById("otherGame").classList.add("hidden");
+    // ====== UI helpers ======
+    document.getElementById('gGame').addEventListener('change', e=>{
+      const t = document.getElementById('gGameOther');
+      if(e.target.value==='other') t.classList.remove('hidden'); else t.classList.add('hidden');
     });
+    function copyText(t){navigator.clipboard.writeText(t); alert('✅ کپی شد: ' + t);}
 
-    function randomIPv4() { return `${5+Math.floor(Math.random()*100)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; }
-    function randomIPv6() { return `2a00:${Math.floor(Math.random()*9999).toString(16)}::${Math.floor(Math.random()*9999).toString(16)}`; }
-
-    function generateDNS() {
-      let count = document.getElementById("dnsCount").value;
-      let country = document.getElementById("dnsCountry").value;
-      let type = document.getElementById("dnsType").value;
-      let game = document.getElementById("dnsGame").value;
-      if(game === "other") game = document.getElementById("otherGame").value || "Game";
-      let device = document.getElementById("dnsDevice").value;
-      let list = document.getElementById("dnsList"); list.innerHTML="";
-      for(let i=0;i<count;i++){
-        let primary = type==="ipv4"?randomIPv4():randomIPv6();
-        let secondary = type==="ipv4"?randomIPv4():randomIPv6();
-        let ping = Math.floor(Math.random()*60+20);
-        let div = document.createElement("div");
-        div.className="dns-box p-4 border rounded mb-3 bg-black text-green-400 shadow-lg";
-        div.innerHTML=`<b>${game} DNS:</b><br>Primary: ${primary}<br>Secondary: ${secondary}<br>[${type.toUpperCase()} - ${country.toUpperCase()}] - ${device}<br>📶 پینگ: ${ping}ms<br><button class="btn mt-2" onclick="copyToClipboard('${primary}, ${secondary}')">Copy</button>`;
-        list.appendChild(div);
-      }
+    function pickShuffle(arr, n){
+      const a=[...arr];
+      for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];}
+      return (n==null)?a:a.slice(0, Math.min(n, a.length));
     }
-
-    function loadDownloadDNS(){
-      let list = document.getElementById("downloadList"); list.innerHTML="";
-      for(let i=0;i<3;i++){
-        let primary = randomIPv4(); let secondary=randomIPv4();
-        let ping=Math.floor(Math.random()*50+20);
-        let div=document.createElement("div");
-        div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
-        div.innerHTML=`🌍 Primary: ${primary} | Secondary: ${secondary}<br>⏱ پینگ: ${ping}ms <button class="btn ml-2" onclick="copyToClipboard('${primary}, ${secondary}')">Copy</button>`;
-        list.appendChild(div);
-      }
+    function renderList(targetId, items, ipver){
+      const box = document.getElementById(targetId);
+      box.innerHTML = "";
+      items.forEach(o=>{
+        const ips = (ipver==='ipv6' ? o.v6 : o.v4);
+        if(!ips || ips.length===0) return;
+        const primary = ips[0], secondary = ips[1] || "";
+        const el = document.createElement('div');
+        el.className = 'dns-item';
+        el.innerHTML = `<b>${o.name||'DNS'}</b> <span class="muted">(${ipver.toUpperCase()})</span><br>
+                        Primary: ${primary} ${secondary? ' | Secondary: '+secondary:''}
+                        <br><button class="btn mt-2" onclick="copyText('${[primary,secondary].filter(Boolean).join(', ')}')">Copy</button>`;
+        box.appendChild(el);
+      });
     }
-
-    function testDNS(){
-      let testList=document.getElementById("testList"); testList.innerHTML="";
-      let datacenters=["رادار شکن","آلفا نت","گیم سرور","توربو نت","HyperDNS","WarpX","SharkNet","DragonHost","PingMaster","IranServer","FireDNS","NitroNet","ShadowNet","FastPing","GalaxyHost","BlackNet","ProXyKing","RocketDNS","UltraHost","NoLagNet"];
-      for(let i=0;i<20;i++){
-        let primary=randomIPv4(); let secondary=randomIPv4();
-        let ping=Math.floor(Math.random()*80+10);
-        let div=document.createElement("div");
-        div.className="dns-box p-3 bg-black text-green-400 rounded mb-2";
-        div.innerHTML=`${datacenters[i]}<br>Primary: ${primary} | Secondary: ${secondary}<br>[IPv4 - 🇮🇷] ⏱ پینگ: ${ping}ms`;
-        testList.appendChild(div);
-      }
-    }
-
-    function pingCustomDNS(){
-      let dns=document.getElementById("customDNS").value;
-      if(!dns){ alert("لطفا DNS وارد کنید"); return; }
-      let start=performance.now();
-      fetch("https://cors-anywhere.herokuapp.com/" + "https://1.1.1.1", {mode:'no-cors'}).finally(()=>{
-        let ping=Math.floor(performance.now()-start);
-        document.getElementById("customPingResult").innerText=`DNS ${dns} ⏱ تقریبی پینگ: ${ping}ms`;
+    function renderIPs(targetId, arr, name, ipver){
+      const box = document.getElementById(targetId);
+      arr.forEach(([p,s])=>{
+        const el=document.createElement('div');
+        el.className='dns-item';
+        el.innerHTML = `<b>${name}</b> <span class="muted">(${ipver.toUpperCase()})</span><br>
+                        Primary: ${p}${s? ' | Secondary: '+s:''}
+                        <br><button class="btn mt-2" onclick="copyText('${[p,s].filter(Boolean).join(', ')}')">Copy</button>`;
+        box.appendChild(el);
       });
     }
 
-    function copyToClipboard(text){ navigator.clipboard.writeText(text); alert("✅ کپی شد: "+text); }
+    // ====== STATIC DATASETS ======
+    // ساختار: { name, v4: [primary, secondary], v6: [primary, secondary] }
+    const gamingDNS = {
+      global: [
+        {name:'Cloudflare', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']},
+        {name:'Google',     v4:['8.8.8.8','8.8.4.4'], v6:['2001:4860:4860::8888','2001:4860:4860::8844']},
+        {name:'Quad9',      v4:['9.9.9.9','149.112.112.112'], v6:['2620:fe::fe','2620:fe::9']},
+        {name:'OpenDNS',    v4:['208.67.222.222','208.67.220.220'], v6:['2620:119:35::35','2620:119:53::53']},
+        {name:'AdGuard',    v4:['94.140.14.14','94.140.15.15'], v6:['2a10:50c0::ad1:ff','2a10:50c0::ad2:ff']},
+      ],
+      ir: [
+        {name:'Shecan',     v4:['178.22.122.100','185.51.200.2'], v6:[]},
+        {name:'403.online', v4:['10.202.10.202','10.202.10.102'], v6:[]},
+      ],
+      us: [
+        {name:'Cloudflare US', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']},
+        {name:'Verisign',      v4:['64.6.64.6','64.6.65.6'], v6:[]},
+        {name:'UltraDNS',      v4:['156.154.70.1','156.154.71.1'], v6:[]},
+      ],
+      de: [
+        {name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], v6:['2001:1608:10:25::1c04:b12f','2001:1608:10:25::9249:d69b']},
+      ],
+      uk: [{name:'Cloudflare UK', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      fr: [{name:'Cloudflare FR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      ca: [{name:'Cloudflare CA', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      jp: [{name:'Cloudflare JP', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      kr: [{name:'Cloudflare KR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      in: [{name:'Cloudflare IN', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      ru: [{name:'SafeDNS (RU)', v4:['195.46.39.39','195.46.39.40'], v6:[]}],
+      tr: [{name:'Cloudflare TR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      br: [{name:'Cloudflare BR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+    };
+
+    const downloadDNS = {
+      global: [
+        {name:'Cloudflare', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']},
+        {name:'Google',     v4:['8.8.8.8','8.8.4.4'], v6:['2001:4860:4860::8888','2001:4860:4860::8844']},
+        {name:'Quad9',      v4:['9.9.9.9','149.112.112.112'], v6:['2620:fe::fe','2620:fe::9']},
+        {name:'OpenDNS',    v4:['208.67.222.222','208.67.220.220'], v6:['2620:119:35::35','2620:119:53::53']},
+        {name:'AdGuard',    v4:['94.140.14.14','94.140.15.15'], v6:['2a10:50c0::ad1:ff','2a10:50c0::ad2:ff']},
+      ],
+      ir: [
+        {name:'Shecan',     v4:['178.22.122.100','185.51.200.2'], v6:[]},
+        {name:'403.online', v4:['10.202.10.202','10.202.10.102'], v6:[]},
+      ],
+      us: [{name:'Verisign', v4:['64.6.64.6','64.6.65.6'], v6:[]}],
+      de: [{name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], v6:['2001:1608:10:25::1c04:b12f','2001:1608:10:25::9249:d69b']}],
+      uk: [{name:'Cloudflare UK', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      fr: [{name:'Cloudflare FR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      ca: [{name:'Cloudflare CA', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      jp: [{name:'Cloudflare JP', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      kr: [{name:'Cloudflare KR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      in: [{name:'Cloudflare IN', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      ru: [{name:'SafeDNS (RU)', v4:['195.46.39.39','195.46.39.40'], v6:[]}],
+      tr: [{name:'Cloudflare TR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+      br: [{name:'Cloudflare BR', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001']}],
+    };
+
+    // ====== GENERATOR RANGES ======
+    // رنج‌های واقع‌گرایانه برای ساخت IP (نه تضمین رزولور بودن؛ صرفاً در محدودهٔ کشور/اپراتور)
+    // IPv4: هر آیتم یک "الگو" است. '*' یعنی بخش تصادفی 0..255 (به‌جز 0/255 در octet آخر)
+    // IPv6: prefix ها؛ بخش‌های باقی‌مانده را تصادفی پر می‌کنیم.
+    const genRanges = {
+      ir: {
+        ipv4: ['178.22.*.*','185.51.*.*','37.152.*.*','5.160.*.*'],
+        ipv6: ['2a0a:*. *: *::', '2a10:50c0::*'] // ساده/نمادین
+      },
+      us: {
+        ipv4: ['3.*.*.*','8.*.*.*','64.6.*.*','156.154.*.*','23.*.*.*','45.*.*.*'],
+        ipv6: ['2606:*:*::*','2001:4860:*:*::*']
+      },
+      de: {
+        ipv4: ['84.200.*.*','185.222.*.*','5.9.*.*','138.201.*.*'],
+        ipv6: ['2a01:4f8::*','2a02:26f0::*','2001:1608:*:*::*']
+      },
+      uk: {
+        ipv4: ['51.*.*.*','81.*.*.*','212.58.*.*'],
+        ipv6: ['2a00:23c8::*','2a01:4b00::*','2a00:1098::*']
+      },
+      fr: {
+        ipv4: ['51.159.*.*','62.210.*.*','163.172.*.*'],
+        ipv6: ['2a00:5884::*','2001:41d0::*']
+      },
+      ca: {
+        ipv4: ['24.*.*.*','99.*.*.*','142.*.*.*','192.0.*.*'],
+        ipv6: ['2607:f8b0::*','2607:fea8::*']
+      },
+      jp: {
+        ipv4: ['43.*.*.*','60.*.*.*','126.*.*.*','150.*.*.*'],
+        ipv6: ['2400:cb00::*','2400:8500::*','240f::*']
+      },
+      kr: {
+        ipv4: ['14.*.*.*','27.*.*.*','61.*.*.*','211.*.*.*'],
+        ipv6: ['2400:da00::*','2400:dd00::*']
+      },
+      in: {
+        ipv4: ['27.*.*.*','49.*.*.*','103.*.*.*','115.*.*.*'],
+        ipv6: ['2405:200::*','2406:da14::*']
+      },
+      ru: {
+        ipv4: ['77.*.*.*','79.*.*.*','178.*.*.*','195.*.*.*'],
+        ipv6: ['2a00:1838::*','2a02:6b8::*']
+      },
+      tr: {
+        ipv4: ['31.*.*.*','78.*.*.*','88.*.*.*','95.*.*.*'],
+        ipv6: ['2a00:1450::*','2a00:1c10::*']
+      },
+      br: {
+        ipv4: ['45.*.*.*','170.*.*.*','177.*.*.*','191.*.*.*'],
+        ipv6: ['2804::*','2801::*']
+      },
+      global: {
+        ipv4: ['1.1.*.*','1.0.*.*','8.*.*.*','9.*.*.*','208.67.*.*','94.140.*.*'],
+        ipv6: ['2606:4700::*','2001:4860::*','2620:fe::*','2620:119::*','2a10:50c0::*']
+      }
+    };
+
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+    function randHex(len){let s='';for(let i=0;i<len;i++) s+= '0123456789abcdef'[randInt(0,15)]; return s;}
+
+    function buildIPv4FromPattern(ptn){
+      // مثال: '178.22.*.*'
+      const oct = ptn.split('.');
+      return oct.map((o,i)=>{
+        if(o==='*'){
+          if(i===3){ // last octet: avoid 0/255
+            let v=randInt(1,254); return String(v);
+          }
+          return String(randInt(0,255));
+        }
+        return o;
+      }).join('.');
+    }
+
+    function genIPv6(prefix){
+      // ساده: اگر "::" دارد، جای خالی را با گروه‌های 4-hex پر می‌کنیم
+      // خروجی 8 گروه hex
+      // برای سادگی و خوانایی تولید، اینجا ساخت «نمایی» انجام می‌دهیم
+      let parts = prefix.split('::');
+      if(parts.length===1){
+        // کامل نیست؛ اضافه می‌کنیم گروه‌های تصادفی تا 8
+        let segs = prefix.split(':').filter(Boolean);
+        while(segs.length<8) segs.push(randHex(4));
+        return segs.slice(0,8).join(':');
+      }else{
+        const left = parts[0].split(':').filter(Boolean);
+        const right = parts[1].split(':').filter(Boolean);
+        const missing = 8 - (left.length + right.length);
+        const mid = Array.from({length: missing}, ()=>randHex(4));
+        return [...left, ...mid, ...right].join(':');
+      }
+    }
+
+    function generatePairs(country, ipver, n){
+      const out = [];
+      const ranges = (genRanges[country]||genRanges.global)[ipver];
+      for(let i=0;i<n;i++){
+        const p = ranges[randInt(0, ranges.length-1)];
+        const s = ranges[randInt(0, ranges.length-1)];
+        const primary = (ipver==='ipv4') ? buildIPv4FromPattern(p) : genIPv6(p);
+        const secondary = (ipver==='ipv4') ? buildIPv4FromPattern(s) : genIPv6(s);
+        out.push([primary, secondary]);
+      }
+      return out;
+    }
+
+    // ====== GAMING ACTION ======
+    function generateGaming(){
+      const country = document.getElementById('gCountry').value;
+      const ipver   = document.getElementById('gIPver').value;
+      const sCount  = parseInt(document.getElementById('gStaticCount').value || '0',10);
+      const gCount  = parseInt(document.getElementById('gGenCount').value || '0',10);
+      const target  = 'gamingOut';
+      document.getElementById(target).innerHTML = '';
+
+      // 1) STATIC
+      const pool = [].concat(gamingDNS.global, gamingDNS[country]||[]);
+      const statItems = pickShuffle(
+        pool.filter(o => (ipver==='ipv6'? (o.v6 && o.v6.length): (o.v4 && o.v4.length))),
+        sCount
+      ).map(o=>({name:o.name, v4:o.v4||[], v6:o.v6||[]}));
+      renderList(target, statItems, ipver);
+
+      // 2) GENERATED
+      if(gCount>0){
+        const pairs = generatePairs(country, ipver, gCount);
+        renderIPs(target, pairs, 'Generated ('+country.toUpperCase()+')', ipver);
+      }
+    }
+
+    // ====== DOWNLOAD ACTION ======
+    function showDownload(){
+      const country = document.getElementById('dCountry').value;
+      const ipver   = document.getElementById('dIPver').value;
+      const count   = parseInt(document.getElementById('dCount').value || '10',10);
+      const pool = [].concat(downloadDNS.global, downloadDNS[country]||[]);
+      const items = pickShuffle(
+        pool.filter(o => (ipver==='ipv6'? (o.v6 && o.v6.length): (o.v4 && o.v4.length))),
+        count
+      );
+      renderList('downloadOut', items, ipver);
+    }
   </script>
+
+  <p class="muted text-center mb-8">
+    ⚠️ ژنراتور آدرس‌ها را «در رنج‌های آن کشور» می‌سازد ولی لزوماً رزولور فعال نیستند. برای استفاده قطعی از بخش «لیست ثابت» بهره ببر.
+  </p>
 </body>
-</html>
+  </html>
