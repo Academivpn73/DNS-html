@@ -2,698 +2,246 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>Academi DNS Panel v1.1.0</title>
+  <title>Academi DNS Panel v1.0.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind CDN for quick styles -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
-      --accent: #00ff88;
-      --glass: rgba(10,10,10,0.78);
+      --accent:#00ff88;
+      --glass:rgba(10,10,10,0.65);
     }
-    html,body{height:100%}
     body{
       margin:0;padding:18px;
-      font-family: "Vazirmatn",system-ui,"Segoe UI",Roboto,Arial;
-      /* background image you provided - save it as gaming-bg.jpg beside this file */
-      background: url('gaming-bg.jpg') center/cover fixed;
+      font-family:system-ui,"Segoe UI",Roboto,Arial;
+      background:url('gaming-bg.jpg') center/cover fixed;
       color:#e6fff2;
-      -webkit-font-smoothing:antialiased;
     }
-    /* container */
     .container{max-width:1200px;margin:0 auto;}
     .header{text-align:center;margin-bottom:18px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
     .title{font-weight:800;color:var(--accent);font-size:28px}
-    .ver{font-size:12px;color:#dfffe0;margin-left:8px}
-    /* cards */
+    .links a{color:#00ffc6;text-decoration:none;font-weight:700}
+    .links a:hover{text-decoration:underline}
     .card{
-      background: linear-gradient(180deg, rgba(5,5,5,0.82), rgba(8,8,8,0.64));
+      background:var(--glass);
       border:1px solid rgba(0,255,136,0.12);
       border-radius:14px;padding:16px;margin-bottom:16px;
-      box-shadow: 0 8px 26px rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
     }
     label{min-width:110px;color:#d1ffd8;display:inline-block;margin-left:8px}
-    select,input,button{font-family:inherit}
     select,input{
-      background:#fff;color:#000;padding:8px 10px;border-radius:8px;border:1px solid #ddd;
+      background:#fff;color:#000;padding:8px 10px;
+      border-radius:8px;border:1px solid #ddd;
     }
     .btn{
       background:linear-gradient(90deg,var(--accent),#00ffc8);
       color:#000;padding:9px 14px;border-radius:10px;font-weight:700;cursor:pointer;border:none;
-      box-shadow:0 8px 18px rgba(0,255,136,0.12);
+      margin:4px;
     }
-    .btn:active{transform:translateY(1px)}
     .dns-item{
-      border-radius:10px;padding:10px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.45));
-      border:1px solid rgba(0,255,136,0.06);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;
+      border-radius:10px;padding:10px;background:rgba(0,0,0,0.55);
+      border:1px solid rgba(0,255,136,0.06);margin-bottom:10px;
+      display:flex;justify-content:space-between;align-items:center;
     }
     .dns-left{max-width:72%}
-    .small{font-size:0.9rem;color:#d9ffe6}
     .ok{color:#9fffb4;font-weight:700}
     .warn{color:#ffd966;font-weight:700}
     .bad{color:#ff8b8b;font-weight:700}
-    .muted{color:#bdefd0;font-size:0.95rem}
-    .grid{display:grid;gap:10px}
-    .grid-2{grid-template-columns:1fr 1fr}
-    .flex-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    textarea{width:100%;min-height:140px;background:rgba(0,0,0,0.45);color:#dff;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04)}
-    .export-btn{background:#fff;color:#000;padding:8px 10px;border-radius:8px;border:1px solid #ccc}
-    /* responsive small tweaks */
-    @media(max-width:820px){
-      .grid-2{grid-template-columns:1fr}
-      label{min-width:90px}
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div class="title">🎮 Academi DNS Panel <span class="ver">v1.1.0</span></div>
-      <div class="muted">Static list + Generator (realistic ranges) + DoH-based Ping (از دید اینترنت شما) + Export</div>
+      <div class="title">🎮 Academi DNS Panel v1.1.0</div>
+      <div class="links">
+        Telegram: <a href="https://t.me/Academii73" target="_blank">@Academii73</a><br>
+        Admin By: <a href="https://t.me/MahdiAGM0" target="_blank">@MahdiAGM0</a><br>
+        Version: 1.0.2
+      </div>
     </div>
 
-    <!-- ===== GAMING: Static + Generator ===== -->
-    <section class="card" id="gaming">
-      <h2 class="text-lg font-semibold" style="color:var(--accent)">⚡ Generate DNS — Gaming</h2>
-
-      <div class="grid grid-2" style="margin-top:10px">
-        <div>
-          <label>کشور:</label>
-          <select id="gCountry" class="mt-1">
-            <option value="global">🌍 Global</option>
-            <option value="ir">🇮🇷 ایران</option>
-            <option value="us">🇺🇸 آمریکا</option>
-            <option value="de">🇩🇪 آلمان</option>
-            <option value="uk">🇬🇧 انگلیس</option>
-            <option value="fr">🇫🇷 فرانسه</option>
-            <option value="ca">🇨🇦 کانادا</option>
-            <option value="jp">🇯🇵 ژاپن</option>
-            <option value="kr">🇰🇷 کره جنوبی</option>
-            <option value="in">🇮🇳 هند</option>
-            <option value="ru">🇷🇺 روسیه</option>
-            <option value="tr">🇹🇷 ترکیه</option>
-            <option value="br">🇧🇷 برزیل</option>
-          </select>
-        </div>
-
-        <div>
-          <label>نوع IP:</label>
-          <select id="gIPver" class="mt-1">
-            <option value="ipv4">IPv4</option>
-            <option value="ipv6">IPv6</option>
-          </select>
-        </div>
-
-        <div>
-          <label>تعداد از لیست ثابت:</label>
-          <input id="gStaticCount" type="number" value="5" min="0" style="width:110px;margin-top:6px" />
-        </div>
-
-        <div>
-          <label>تعداد ژنراتوری:</label>
-          <input id="gGenCount" type="number" value="5" min="0" style="width:110px;margin-top:6px" />
-        </div>
-
-        <div style="grid-column:1/-1; margin-top:6px">
-          <label>بازی (اختیاری):</label>
-          <input id="gGame" placeholder="مثال: Valorant — فقط یک برچسب نمایش" style="width:60%; margin-top:6px" />
-          <div class="muted" style="display:inline-block;margin-right:12px">تعداد نامحدود قابل انتخاب است؛ اما برای کارایی معقول بگذار 5–30.</div>
-        </div>
+    <!-- ===== Gaming DNS ===== -->
+    <section class="card">
+      <h2 style="color:var(--accent)">⚡ Generate DNS — Gaming</h2>
+      <div style="margin-top:10px">
+        <label>کشور:</label>
+        <select id="gCountry">
+          <option value="global">🌍 Global</option>
+          <option value="ir">🇮🇷 ایران</option>
+          <option value="us">🇺🇸 آمریکا</option>
+          <option value="de">🇩🇪 آلمان</option>
+          <option value="uk">🇬🇧 انگلیس</option>
+          <option value="fr">🇫🇷 فرانسه</option>
+          <option value="ca">🇨🇦 کانادا</option>
+          <option value="jp">🇯🇵 ژاپن</option>
+          <option value="kr">🇰🇷 کره جنوبی</option>
+          <option value="in">🇮🇳 هند</option>
+          <option value="ru">🇷🇺 روسیه</option>
+          <option value="tr">🇹🇷 ترکیه</option>
+          <option value="br">🇧🇷 برزیل</option>
+        </select>
+        <label>نوع IP:</label>
+        <select id="gIPver"><option value="ipv4">IPv4</option><option value="ipv6">IPv6</option></select>
+        <label>تعداد از لیست ثابت:</label>
+        <input id="gStaticCount" type="number" value="5" min="0" style="width:70px">
+        <label>تعداد ژنراتوری:</label>
+        <input id="gGenCount" type="number" value="5" min="0" style="width:70px">
       </div>
-
-      <div style="margin-top:12px" class="flex-row">
+      <div style="margin-top:12px">
+        <label>انتخاب بازی:</label>
+        <select id="gGame" onchange="toggleOtherGame()">
+          <option value="other">Other / سایر</option>
+          <option>Valorant</option>
+          <option>CS:GO</option>
+          <option>Fortnite</option>
+          <option>PUBG</option>
+          <option>Call of Duty</option>
+          <option>Apex Legends</option>
+          <option>League of Legends</option>
+          <option>Dota 2</option>
+          <option>Overwatch</option>
+          <option>FIFA 23</option>
+          <option>GTA Online</option>
+          <option>Minecraft</option>
+          <option>Roblox</option>
+          <option>Battlefield</option>
+          <option>Rainbow Six Siege</option>
+          <option>World of Warcraft</option>
+          <option>Rocket League</option>
+          <option>Cyberpunk 2077</option>
+          <option>Elden Ring</option>
+          <option>Among Us</option>
+          <option>Clash of Clans</option>
+          <option>Clash Royale</option>
+          <option>Brawl Stars</option>
+          <option>Mobile Legends</option>
+          <option>Free Fire</option>
+          <option>PES</option>
+          <option>Assassin's Creed</option>
+          <option>Far Cry</option>
+          <option>Halo</option>
+          <option>Diablo IV</option>
+          <option>Starfield</option>
+          <option>Monster Hunter</option>
+          <option>Path of Exile</option>
+          <option>Smite</option>
+          <option>Warframe</option>
+          <option>Destiny 2</option>
+          <option>Ark: Survival</option>
+          <option>Rust</option>
+          <option>Palworld</option>
+        </select>
+        <input id="otherGame" placeholder="اسم بازی شما..." style="display:none;margin-top:8px;background:#fff;color:#000;border-radius:8px;padding:6px 10px">
+      </div>
+      <div style="margin-top:12px">
         <button class="btn" onclick="generateGaming()">Generate</button>
         <button class="btn" onclick="generateGaming()">Regenerate</button>
-        <button class="btn" onclick="exportGaming()">Export (TXT / JSON)</button>
-        <div class="muted" style="margin-right:12px">اول چندتا از لیست ثابت نمایش داده می‌شود سپس آی‌پی‌های تولیدی که **پاسخ HTTPS** می‌دهند.</div>
       </div>
-
       <div id="gamingOut" style="margin-top:12px"></div>
     </section>
 
-    <!-- ===== DOWNLOAD: Static (Unfiltered / Anti-censorship-friendly) ===== -->
-    <section class="card" id="download">
-      <h2 class="text-lg font-semibold" style="color:var(--accent)">📥 DNS دانلود — Unfiltered / Anti-censorship</h2>
-
-      <div class="flex-row" style="margin-top:10px;gap:12px">
-        <label>حوزه/کشور:</label>
-        <select id="dCountry"><option value="global">🌍 Global</option><option value="ir">🇮🇷 ایران</option><option value="us">🇺🇸 آمریکا</option></select>
-
+    <!-- ===== Download DNS ===== -->
+    <section class="card">
+      <h2 style="color:var(--accent)">📥 DNS Download</h2>
+      <div style="margin-top:10px">
+        <label>کشور:</label>
+        <select id="dCountry"><option value="global">🌍 Global</option><option value="ir">🇮🇷 ایران</option></select>
         <label>IP:</label>
         <select id="dIPver"><option value="ipv4">IPv4</option><option value="ipv6">IPv6</option></select>
-
         <label>تعداد:</label>
-        <input id="dCount" type="number" min="1" value="10" style="width:90px">
-
-        <button class="btn" onclick="showDownload()">نمایش DNS دانلود</button>
-        <button class="btn" onclick="exportDownload()">Export (TXT/JSON)</button>
+        <input id="dCount" type="number" value="5" min="1" style="width:70px">
+        <button class="btn" onclick="showDownload()">Show</button>
       </div>
-
       <div id="downloadOut" style="margin-top:12px"></div>
     </section>
 
-    <!-- ===== ALL DNS PING ===== -->
-    <section class="card" id="allPing">
-      <h2 class="text-lg font-semibold" style="color:var(--accent)">🌐 All DNS Ping — Top 30 (DoH / HTTPS-based)</h2>
-      <div class="flex-row" style="margin-top:10px">
-        <div class="muted">در این بخش 30 DNS معتبر جهانی با DoH/HTTPS تست می‌شود (تا حد امکان DoH اولویت دارد).</div>
-        <button class="btn" onclick="pingAllTop()">Ping all</button>
-        <button class="btn" onclick="exportAllTop()">Export Results (TXT/JSON)</button>
-      </div>
+    <!-- ===== All DNS Ping ===== -->
+    <section class="card">
+      <h2 style="color:var(--accent)">🌐 All DNS Ping (Top 30)</h2>
+      <button class="btn" onclick="pingAllTop()">Ping All</button>
       <div id="allPingOut" style="margin-top:12px"></div>
     </section>
 
-    <!-- ===== CUSTOM PING ===== -->
-    <section class="card" id="customPing">
-      <h2 class="text-lg font-semibold" style="color:var(--accent)">🧪 Ping DNS (Custom)</h2>
-      <div class="flex-row" style="margin-top:10px">
-        <label>Primary (IP or hostname):</label>
-        <input id="cPrimary" placeholder="مثال: 1.1.1.1 یا dns.google">
-        <label>Secondary (اختیاری):</label>
-        <input id="cSecondary" placeholder="مثال: 8.8.8.8">
-        <button class="btn" onclick="pingCustom()">Ping</button>
-        <button class="btn" onclick="exportCustom()">Export (TXT/JSON)</button>
-      </div>
+    <!-- ===== Custom Ping ===== -->
+    <section class="card">
+      <h2 style="color:var(--accent)">🧪 Ping DNS (Custom)</h2>
+      <label>Primary:</label><input id="cPrimary" placeholder="1.1.1.1">
+      <label>Secondary:</label><input id="cSecondary" placeholder="8.8.8.8">
+      <button class="btn" onclick="pingCustom()">Ping</button>
       <div id="customOut" style="margin-top:12px"></div>
-      <div class="muted" style="margin-top:10px">روش اندازه‌گیری: DoH/HTTPS از دید مرورگر شما (رایگان، سمت‌کلاینت).</div>
     </section>
-
-    <!-- ===== APPLY GUIDE ===== -->
-    <section class="card" id="applyGuide">
-      <h2 class="text-lg font-semibold" style="color:var(--accent)">🛠 راهنمای سریع: اعمال DNS روی دستگاه</h2>
-      <div class="grid" style="margin-top:8px">
-        <div class="muted"><strong>Windows 10/11:</strong> Control Panel → Network and Internet → Network Connections → Right-click adapter → Properties → Internet Protocol Version 4 (TCP/IPv4) → Properties → Use the following DNS server addresses → وارد کن.</div>
-        <div class="muted"><strong>Android (Wi-Fi):</strong> Wi-Fi → Long-press network → Modify network → Advanced → IP settings → Static → DNS 1 / DNS 2 (یا در بعضی ROM ها Configure DNS).</div>
-        <div class="muted"><strong>iOS (iPhone / iPad):</strong> Settings → Wi-Fi → Tap (i) next to network → Configure DNS → Manual → Add Server → Save.</div>
-        <div class="muted"><strong>Router:</strong> وارد تنظیمات روتر شو، بخش WAN/DNS یا DHCP → Primary/Secondary DNS را جایگزین کن و ذخیره کن.</div>
-      </div>
-    </section>
-
   </div>
 
-  <!-- ===========================
-       JavaScript — logic (DoH / generator / export / ping)
-       =========================== -->
-  <script>
-  /**************************************************************************
-   * Helpers
-   **************************************************************************/
-  const el = id => document.getElementById(id);
-  function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-  function shuffle(a){const c=[...a]; for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c;}
-  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-  function downloadFile(filename, content, mime='text/plain'){
-    const blob = new Blob([content], {type: mime});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click();
-    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 2000);
+<script>
+// فعال‌سازی فیلد گیم دیگر
+function toggleOtherGame(){
+  const g = document.getElementById('gGame');
+  const other = document.getElementById('otherGame');
+  other.style.display = g.value==="other" ? "block":"none";
+}
+
+// نمونه داده DNS ثابت
+const staticDNS = {
+  global:["1.1.1.1","8.8.8.8","9.9.9.9","208.67.222.222"],
+  ir:["178.22.122.100","185.51.200.2"],
+  us:["8.8.8.8","8.8.4.4"],
+  de:["9.9.9.9","149.112.112.112"]
+};
+
+// تولید DNS گیم
+function generateGaming(){
+  const out=document.getElementById('gamingOut');
+  const country=document.getElementById('gCountry').value;
+  const sCount=parseInt(document.getElementById('gStaticCount').value)||0;
+  const gCount=parseInt(document.getElementById('gGenCount').value)||0;
+  let dnsList=[];
+  if(staticDNS[country]) dnsList.push(...staticDNS[country].slice(0,sCount));
+  for(let i=0;i<gCount;i++){
+    dnsList.push("192.168."+Math.floor(Math.random()*255)+"."+Math.floor(Math.random()*255));
   }
+  out.innerHTML=dnsList.map(ip=>`<div class="dns-item"><div class="dns-left">${ip}</div></div>`).join("");
+}
 
-  /**************************************************************************
-   * Static DNS datasets (real public resolvers + DoH endpoints when available)
-   * Each entry: { name, v4:[p,s], v6:[p,s], doh: [dohURLTemplate] }
-   * doh URL templates should include a placeholder (we will append ?name=example.com or use as-is)
-   **************************************************************************/
-  const staticDNS = {
-    gaming: {
-      global:[
-        {name:'Cloudflare', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001'], doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-        {name:'Google', v4:['8.8.8.8','8.8.4.4'], v6:['2001:4860:4860::8888','2001:4860:4860::8844'], doh:['https://dns.google/resolve?name=example.com']},
-        {name:'Quad9', v4:['9.9.9.9','149.112.112.112'], v6:['2620:fe::fe','2620:fe::9'], doh:['https://dns.quad9.net/dns-query?name=example.com']},
-        {name:'OpenDNS', v4:['208.67.222.222','208.67.220.220'], v6:['2620:119:35::35','2620:119:53::53'], doh:['https://doh.opendns.com/dns-query?name=example.com']},
-        {name:'AdGuard', v4:['94.140.14.14','94.140.15.15'], v6:['2a10:50c0::ad1:ff','2a10:50c0::ad2:ff'], doh:['https://dns.adguard.com/dns-query?name=example.com']},
-        {name:'CleanBrowsing', v4:['185.228.168.9','185.228.169.9'], v6:[], doh:['https://doh.cleanbrowsing.org/doh/security-filter?name=example.com']},
-        {name:'Yandex', v4:['77.88.8.8','77.88.8.2'], v6:[], doh:['https://dns.yandex.net/dns-query?name=example.com']},
-        {name:'Verisign', v4:['64.6.64.6','64.6.65.6'], v6:[], doh:[]},
-        {name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], v6:['2001:1608:10:25::1c04:b12f','2001:1608:10:25::9249:d69b'], doh:[]},
-        {name:'SafeDNS', v4:['195.46.39.39','195.46.39.40'], v6:[], doh:[]},
-      ],
-      ir:[
-        {name:'Shecan', v4:['178.22.122.100','185.51.200.2'], v6:[], doh:[]},
-        {name:'403.online', v4:['10.202.10.202','10.202.10.102'], v6:[], doh:[]}
-      ],
-      us:[
-        {name:'UltraDNS', v4:['156.154.70.1','156.154.71.1'], v6:[], doh:[]}
-      ],
-      de:[ {name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], v6:['2001:1608:10:25::1c04:b12f','2001:1608:10:25::9249:d69b'], doh:[] } ],
-      // fallback: many countries will use global/Cloudflare anycast
-    },
-    download: {
-      global:[
-        {name:'Cloudflare', v4:['1.1.1.1','1.0.0.1'], v6:['2606:4700:4700::1111','2606:4700:4700::1001'], doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-        {name:'Google', v4:['8.8.8.8','8.8.4.4'], v6:['2001:4860:4860::8888','2001:4860:4860::8844'], doh:['https://dns.google/resolve?name=example.com']},
-        {name:'AdGuard', v4:['94.140.14.14','94.140.15.15'], v6:[], doh:['https://dns.adguard.com/dns-query?name=example.com']},
-        {name:'Quad9', v4:['9.9.9.9','149.112.112.112'], v6:[], doh:['https://dns.quad9.net/dns-query?name=example.com']}
-      ],
-      ir:[
-        {name:'Shecan', v4:['178.22.122.100','185.51.200.2'], v6:[], doh:[]}
-      ]
-    }
-  };
+// نمایش DNS دانلود
+function showDownload(){
+  const out=document.getElementById('downloadOut');
+  const country=document.getElementById('dCountry').value;
+  const count=parseInt(document.getElementById('dCount').value)||1;
+  let list=staticDNS[country]||staticDNS.global;
+  out.innerHTML=list.slice(0,count).map(ip=>`<div class="dns-item">${ip}</div>`).join("");
+}
 
-  /**************************************************************************
-   * Generator ranges (realistic patterns per country)
-   * Patterns: use '*' as wildcard for octets. For IPv6, use prefixes.
-   **************************************************************************/
-  const genRanges = {
-    ir: { ipv4:['178.22.*.*','185.51.*.*','5.160.*.*','37.152.*.*'], ipv6:['2a0a::','2a10:50c0::'] },
-    us: { ipv4:['8.*.*.*','3.*.*.*','23.*.*.*','64.*.*.*','45.*.*.*'], ipv6:['2606:4700::','2001:4860::'] },
-    de: { ipv4:['84.200.*.*','185.222.*.*','5.9.*.*','138.201.*.*'], ipv6:['2a01:4f8::','2001:1608::'] },
-    uk: { ipv4:['51.*.*.*','81.*.*.*','212.58.*.*'], ipv6:['2a00:23c8::'] },
-    fr: { ipv4:['51.159.*.*','62.210.*.*','163.172.*.*'], ipv6:['2a00:5884::'] },
-    ca: { ipv4:['24.*.*.*','99.*.*.*','142.*.*.*'], ipv6:['2607:f8b0::'] },
-    jp: { ipv4:['43.*.*.*','60.*.*.*','126.*.*.*'], ipv6:['2400:cb00::'] },
-    kr: { ipv4:['14.*.*.*','27.*.*.*','61.*.*.*'], ipv6:['2400:da00::'] },
-    in: { ipv4:['27.*.*.*','49.*.*.*','103.*.*.*','115.*.*.*'], ipv6:['2405:200::'] },
-    ru: { ipv4:['77.*.*.*','79.*.*.*','178.*.*.*','195.*.*.*'], ipv6:['2a00:1838::'] },
-    tr: { ipv4:['31.*.*.*','78.*.*.*','88.*.*.*','95.*.*.*'], ipv6:['2a00:1450::'] },
-    br: { ipv4:['45.*.*.*','170.*.*.*','177.*.*.*','191.*.*.*'], ipv6:['2804::'] },
-    global: { ipv4:['1.1.*.*','8.*.*.*','9.*.*.*','208.67.*.*','94.140.*.*'], ipv6:['2606:4700::','2001:4860::','2620:fe::'] }
-  };
+// پینگ ساده (شبیه‌سازی)
+async function pingIP(ip){
+  const start=performance.now();
+  try{
+    await fetch("https://"+ip,{mode:"no-cors"});
+  }catch{}
+  return Math.floor(performance.now()-start)+ " ms";
+}
 
-  // build ipv4 from pattern '178.22.*.*'
-  function buildIPv4(pattern){
-    const parts = pattern.split('.');
-    return parts.map((p,i)=>{
-      if(p==='*') {
-        if(i===3) return String(randInt(2,253));
-        return String(randInt(0,255));
-      }
-      return p;
-    }).join('.');
+async function pingAllTop(){
+  const out=document.getElementById('allPingOut');
+  out.innerHTML="در حال پینگ...";
+  let list=staticDNS.global.concat(staticDNS.us,staticDNS.de).slice(0,10);
+  let res="";
+  for(let ip of list){
+    let ms=await pingIP(ip);
+    res+=`<div class="dns-item"><div>${ip}</div><div>${ms}</div></div>`;
   }
-  function randHex(len){let s='';const hex='0123456789abcdef'; for(let i=0;i<len;i++) s+=hex[randInt(0,15)]; return s;}
-  // simplified ipv6 builder
-  function buildIPv6(prefix){
-    if(!prefix.includes(':')) prefix='2a00::';
-    if(prefix.endsWith('::')) {
-      const base = prefix.replace('::','').split(':').filter(Boolean);
-      const missing = 8 - base.length;
-      const mid = Array.from({length:missing}, ()=>randHex(4));
-      return [...base, ...mid].join(':');
-    } else {
-      const segs = prefix.split(':').filter(Boolean);
-      while(segs.length<8) segs.push(randHex(4));
-      return segs.join(':');
+  out.innerHTML=res;
+}
+
+async function pingCustom(){
+  const out=document.getElementById('customOut');
+  out.innerHTML="";
+  const ips=[document.getElementById('cPrimary').value,document.getElementById('cSecondary').value];
+  for(let ip of ips){
+    if(ip){
+      let ms=await pingIP(ip);
+      out.innerHTML+=`<div class="dns-item"><div>${ip}</div><div>${ms}</div></div>`;
     }
   }
-
-  /**************************************************************************
-   * Ping / measure helpers (DoH/HTTPS based)
-   * Strategy:
-   * 1) If entry has doh[] endpoints, try them first (CORS-friendly often).
-   * 2) Fallback: try https://<ip>/ (no-cors) to measure time (best-effort).
-   * 3) Timeout default per test ~ 3500 ms.
-   **************************************************************************/
-
-  async function measureEndpoints(endpoints, timeoutMs=3500){
-    for(const ep of endpoints){
-      try{
-        const start = performance.now();
-        const controller = new AbortController();
-        const id = setTimeout(()=>controller.abort(), timeoutMs);
-        try{
-          // try CORS mode first
-          await fetch(ep, {method:'GET', mode:'cors', cache:'no-store', signal:controller.signal});
-        }catch(e){
-          // try opaque no-cors fallback (may still resolve timing)
-          try{
-            await fetch(ep, {method:'GET', mode:'no-cors', cache:'no-store', signal:controller.signal});
-          }catch(e2){
-            // failed -> continue to next endpoint
-            clearTimeout(id);
-            continue;
-          }
-        } finally { clearTimeout(id); }
-        const end = performance.now();
-        return Math.max(1, Math.round(end - start));
-      }catch(e){
-        // timeout or network error -> try next endpoint
-        continue;
-      }
-    }
-    throw new Error('no-response');
-  }
-
-  function buildTestUrlsFor(entry, ipver){
-    const urls = [];
-    // prefer DoH endpoints
-    if(entry.doh && entry.doh.length){
-      for(const d of entry.doh) {
-        if(d.includes('?')) urls.push(d);
-        else urls.push(d + (d.includes('?') ? '' : '?name=example.com'));
-      }
-    }
-    // fallback to direct IPs
-    const ips = (ipver==='ipv6' ? (entry.v6||[]) : (entry.v4||[]));
-    for(const ip of ips){
-      if(!ip) continue;
-      if(ip.includes(':')) urls.push('https://['+ip+']/');
-      else urls.push('https://'+ip+'/');
-    }
-    return urls;
-  }
-
-  /**************************************************************************
-   * All top DNS array (≈30) with doh endpoints where available
-   **************************************************************************/
-  const allTopDNS = [
-    {name:'Cloudflare', primary:'1.1.1.1', secondary:'1.0.0.1', doh:['https://cloudflare-dns.com/dns-query?name=example.com','https://1.1.1.1/dns-query?name=example.com']},
-    {name:'Google', primary:'8.8.8.8', secondary:'8.8.4.4', doh:['https://dns.google/resolve?name=example.com']},
-    {name:'Quad9', primary:'9.9.9.9', secondary:'149.112.112.112', doh:['https://dns.quad9.net/dns-query?name=example.com']},
-    {name:'OpenDNS', primary:'208.67.222.222', secondary:'208.67.220.220', doh:['https://doh.opendns.com/dns-query?name=example.com']},
-    {name:'AdGuard', primary:'94.140.14.14', secondary:'94.140.15.15', doh:['https://dns.adguard.com/dns-query?name=example.com']},
-    {name:'CleanBrowsing', primary:'185.228.168.9', secondary:'185.228.169.9', doh:['https://doh.cleanbrowsing.org/doh/security-filter?name=example.com']},
-    {name:'Yandex', primary:'77.88.8.8', secondary:'77.88.8.2', doh:['https://dns.yandex.net/dns-query?name=example.com']},
-    {name:'Verisign', primary:'64.6.64.6', secondary:'64.6.65.6', doh:[]},
-    {name:'DNS.Watch', primary:'84.200.69.80', secondary:'84.200.70.40', doh:[]},
-    {name:'SafeDNS', primary:'195.46.39.39', secondary:'195.46.39.40', doh:[]},
-    {name:'Control D', primary:'76.76.2.0', secondary:'76.76.10.0', doh:[]},
-    {name:'DNS.SB', primary:'185.222.222.222', secondary:'45.77.165.194', doh:[]},
-    {name:'OpenNIC', primary:'185.121.177.177', secondary:'45.32.36.36', doh:[]},
-    {name:'Hurricane Electric', primary:'74.82.42.42', secondary:'74.82.42.43', doh:[]},
-    {name:'Comodo Secure DNS', primary:'8.26.56.26', secondary:'8.20.247.20', doh:[]},
-    {name:'UltraDNS', primary:'156.154.70.1', secondary:'156.154.71.1', doh:[]},
-    {name:'Yandex DoH', primary:'dns.yandex', secondary:'77.88.8.8', doh:['https://dns.yandex.net/dns-query?name=example.com']},
-    {name:'Quad9 (secure)', primary:'9.9.9.11', secondary:'149.112.112.11', doh:['https://dns.quad9.net/dns-query?name=example.com']},
-    {name:'AdGuard DoH', primary:'dns.adguard.com', secondary:'94.140.14.14', doh:['https://dns.adguard.com/dns-query?name=example.com']},
-    {name:'Cloudflare IPv6', primary:'2606:4700:4700::1111', secondary:'2606:4700:4700::1001', doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-    {name:'Google IPv6', primary:'2001:4860:4860::8888', secondary:'2001:4860:4860::8844', doh:['https://dns.google/resolve?name=example.com']},
-    {name:'Quad9 IPv6', primary:'2620:fe::fe', secondary:'2620:fe::9', doh:['https://dns.quad9.net/dns-query?name=example.com']},
-    {name:'DNS.Watch IPv6', primary:'2001:1608:10:25::1c04:b12f', secondary:'2001:1608:10:25::9249:d69b', doh:[]},
-    {name:'Yandex IPv6', primary:'2a02:6b8::feed:bad', secondary:'2a02:6b8:0:1::feed:bad', doh:[]},
-    // (add more if you want)
-  ];
-
-  /**************************************************************************
-   * Rendering helpers
-   **************************************************************************/
-  function makeDNSBoxHTML(name, primary, secondary, latency){
-    let cls='ok';
-    if(latency==null) cls='bad';
-    else if(latency>120) cls='bad';
-    else if(latency>50) cls='warn';
-    else cls='ok';
-    return `
-      <div class="dns-item">
-        <div class="dns-left">
-          <div style="font-weight:700">${name}</div>
-          <div class="small">${primary}${secondary? '  |  '+secondary : ''}</div>
-          ${latency==null? '<div class="small" style="color:#ffd0d0">No response / blocked</div>' : ''}
-        </div>
-        <div style="text-align:right">
-          <div style="margin-bottom:8px"><span class="${cls}">${latency==null ? '—' : latency + ' ms'}</span></div>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
-            <button class="btn" onclick="copyToClipboard('${primary}${secondary?','+secondary:''}')">Copy</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function copyToClipboard(text){
-    navigator.clipboard.writeText(text).then(()=>{ alert('✅ کپی شد: '+text) }).catch(()=>alert('کپی ناموفق'));
-  }
-
-  /**************************************************************************
-   * GENERATOR: produce candidate IP pairs and test them (show only tested)
-   * Note: we try to test generated IPs by fetching https://<ip>/ (no-cors),
-   * which may fail due to TLS or server not responding on HTTPS; we only show
-   * generated pairs that respond within timeout.
-   **************************************************************************/
-  async function generatePairs(country, ipver, count, timeout=3000){
-    const out = [];
-    const ranges = (genRanges[country] || genRanges.global)[ipver];
-    if(!ranges || ranges.length===0) return out;
-    let tries=0;
-    const maxTries = Math.max(200, count*25);
-    while(out.length < count && tries < maxTries){
-      tries++;
-      const pPattern = ranges[randInt(0, ranges.length-1)];
-      const sPattern = ranges[randInt(0, ranges.length-1)];
-      const p = ipver==='ipv4' ? buildIPv4(pPattern) : buildIPv6(pPattern);
-      const s = ipver==='ipv4' ? buildIPv4(sPattern) : buildIPv6(sPattern);
-      // quick duplicate check
-      if(out.some(x=>x[0]===p && x[1]===s)) continue;
-      // test primary (best-effort)
-      let testUrls = [];
-      if(p.includes(':')) testUrls.push('https://['+p+']/');
-      else testUrls.push('https://'+p+'/');
-      try{
-        const latency = await measureEndpoints(testUrls, timeout).catch(()=>null);
-        if(latency!=null){
-          out.push([p,s,latency]);
-        } else {
-          // skip candidate
-        }
-      }catch(e){
-        // skip
-      }
-    }
-    return out;
-  }
-
-  /**************************************************************************
-   * Generate Gaming output:
-   *  - pick sCount items from static pool (country+global)
-   *  - generate gCount pairs, test them, show only tested ones
-   **************************************************************************/
-  async function generateGaming(){
-    const country = el('gCountry').value || 'global';
-    const ipver = el('gIPver').value || 'ipv4';
-    const sCount = Math.max(0, parseInt(el('gStaticCount').value || '0', 10));
-    const gCount = Math.max(0, parseInt(el('gGenCount').value || '0', 10));
-    const outDiv = el('gamingOut');
-    outDiv.innerHTML = '<div class="muted">در حال تولید و آزمایش... لطفاً صبر کنید (زمان بستگی به تعداد انتخاب شده و سرعت اینترنت شما دارد).</div>';
-    // build static pool
-    let pool = [];
-    if(staticDNS.gaming.global) pool = pool.concat(staticDNS.gaming.global);
-    if(country !== 'global' && staticDNS.gaming[country]) pool = pool.concat(staticDNS.gaming[country]);
-    pool = pool.filter(item => (ipver==='ipv6' ? (item.v6 && item.v6.length) : (item.v4 && item.v4.length)));
-    const staticPicked = shuffle(pool).slice(0, sCount);
-
-    // render static immediately (with placeholder latency — user may ping them separately)
-    let html = '';
-    staticPicked.forEach(item=>{
-      const primary = ipver==='ipv6' ? (item.v6[0]||'') : (item.v4[0]||'');
-      const secondary = ipver==='ipv6' ? (item.v6[1]||'') : (item.v4[1]||'');
-      html += makeDNSBoxHTML(item.name + ' (static)', primary, secondary, null);
-    });
-    outDiv.innerHTML = html;
-
-    // generate dynamic pairs and test (show those that respond)
-    if(gCount>0){
-      const generated = await generatePairs(country, ipver, gCount, 3000);
-      if(generated.length===0){
-        outDiv.insertAdjacentHTML('beforeend','<div class="muted">هیچ آی‌پی تولیدشده‌ای در بازه زمانی مشخص پاسخ HTTPS نداد — تعداد یا تایم‌آوت را افزایش بده.</div>');
-      } else {
-        generated.forEach(([p,s,latency])=>{
-          outDiv.insertAdjacentHTML('beforeend', makeDNSBoxHTML('Generated ('+country.toUpperCase()+')', p, s, latency));
-        });
-      }
-    }
-  }
-
-  /**************************************************************************
-   * Show Download (static)
-   **************************************************************************/
-  function showDownload(){
-    const country = el('dCountry').value || 'global';
-    const ipver = el('dIPver').value || 'ipv4';
-    const count = Math.max(1, parseInt(el('dCount').value || '10', 10));
-    let pool = [];
-    if(staticDNS.download.global) pool = pool.concat(staticDNS.download.global);
-    if(country!=='global' && staticDNS.download[country]) pool = pool.concat(staticDNS.download[country]);
-    pool = pool.filter(item => (ipver==='ipv6' ? (item.v6 && item.v6.length) : (item.v4 && item.v4.length)));
-    const items = shuffle(pool).slice(0, count);
-    const outDiv = el('downloadOut'); outDiv.innerHTML = '';
-    if(items.length===0){ outDiv.innerHTML = '<div class="muted">آیتم معتبری موجود نیست.</div>'; return; }
-    items.forEach(item=>{
-      const p = ipver==='ipv6' ? (item.v6[0]||'') : (item.v4[0]||'');
-      const s = ipver==='ipv6' ? (item.v6[1]||'') : (item.v4[1]||'');
-      outDiv.insertAdjacentHTML('beforeend', makeDNSBoxHTML(item.name+' (download)', p, s, null));
-    });
-  }
-
-  /**************************************************************************
-   * Ping All Top — runs through allTopDNS and measures latency (concurrent)
-   **************************************************************************/
-  async function pingAllTop(){
-    const outDiv = el('allPingOut'); outDiv.innerHTML = '<div class="muted">در حال تست '+allTopDNS.length+' DNS — لطفاً صبر کنید...</div>';
-    // render placeholders
-    outDiv.innerHTML = '';
-    allTopDNS.forEach(item => {
-      outDiv.insertAdjacentHTML('beforeend', makeDNSBoxHTML(item.name, item.primary, item.secondary, null));
-    });
-
-    // concurrency control
-    const concurrency = 6;
-    let idx = 0;
-
-    async function worker(){
-      while(true){
-        const i = idx++;
-        if(i >= allTopDNS.length) break;
-        const item = allTopDNS[i];
-        const dom = outDiv.children[i];
-        try{
-          const urls = buildTestUrlsFor({doh:item.doh||[], v4:[item.primary, item.secondary]}, 'ipv4');
-          const latency = await measureEndpoints(urls, 3500).catch(()=>null);
-          // update DOM: replace inner html of item
-          dom.outerHTML = makeDNSBoxHTML(item.name, item.primary, item.secondary, latency);
-        }catch(e){
-          dom.outerHTML = makeDNSBoxHTML(item.name, item.primary, item.secondary, null);
-        }
-      }
-    }
-
-    // start workers
-    const workers = Array.from({length:concurrency}, ()=>worker());
-    await Promise.all(workers);
-    // after finished, sort entries by latency (move DOM nodes)
-    try{
-      const nodes = Array.from(outDiv.children);
-      const withLatency = nodes.map(n=>{
-        const name = n.querySelector('.dns-left div').innerText;
-        const latencyText = n.querySelector('span.ok, span.warn, span.bad')?.innerText || '—';
-        const latency = latencyText==='—'? Number.POSITIVE_INFINITY : parseInt(latencyText);
-        return {node:n, latency};
-      });
-      withLatency.sort((a,b)=>a.latency - b.latency);
-      outDiv.innerHTML = '';
-      withLatency.forEach(x => outDiv.appendChild(x.node));
-    }catch(e){ /* ignore sorting errors */ }
-  }
-
-  /**************************************************************************
-   * Custom Ping: test primary and secondary separately with DoH or direct https
-   **************************************************************************/
-  async function pingCustom(){
-    const p = el('cPrimary').value.trim();
-    const s = el('cSecondary').value.trim();
-    const outDiv = el('customOut'); outDiv.innerHTML = '';
-    if(!p && !s) { outDiv.innerHTML = '<div class="muted">لطفاً حداقل یک آدرس وارد کنید.</div>'; return; }
-
-    async function testAddr(addr){
-      // if addr contains letters, try DoH host (https://<host>/dns-query or /resolve)
-      const attempts = [];
-      if(/[a-zA-Z]/.test(addr)){
-        // try common DoH endpoints if user entered a provider host (dns.google, cloudflare-dns.com)
-        attempts.push(addr.startsWith('http')? addr : 'https://'+addr + '/dns-query?name=example.com');
-        attempts.push(addr.startsWith('http')? addr : 'https://'+addr + '/resolve?name=example.com');
-      } else {
-        // ip literal
-        if(addr.includes(':')) attempts.push('https://['+addr+']/');
-        else attempts.push('https://'+addr+'/');
-      }
-      const latency = await measureEndpoints(attempts, 3500).catch(()=>null);
-      return latency;
-    }
-
-    if(p){
-      outDiv.insertAdjacentHTML('beforeend','<div class="muted">در حال تست Primary...</div>');
-      const lat = await testAddr(p);
-      outDiv.innerHTML = makeDNSBoxHTML('Primary', p, '', lat);
-    }
-    if(s){
-      outDiv.insertAdjacentHTML('beforeend','<div class="muted">در حال تست Secondary...</div>');
-      const lat2 = await testAddr(s);
-      outDiv.insertAdjacentHTML('beforeend', makeDNSBoxHTML('Secondary', s, '', lat2));
-    }
-  }
-
-  /**************************************************************************
-   * Export functions (TXT and JSON)
-   **************************************************************************/
-  function exportGaming(){
-    const outDiv = el('gamingOut');
-    if(!outDiv.innerText.trim()){ alert('هیچ خروجی‌ای برای export وجود ندارد. اول Generate بزن.'); return; }
-    // gather lines from displayed boxes
-    const boxes = Array.from(outDiv.querySelectorAll('.dns-item'));
-    const lines = boxes.map(b=>{
-      const name = b.querySelector('.dns-left div').innerText;
-      const ip = b.querySelector('.small')?.innerText || '';
-      const latency = b.querySelector('span.ok, span.warn, span.bad')?.innerText || '';
-      return `${name} — ${ip} — ${latency}`;
-    });
-    const txt = lines.join('\n');
-    const json = JSON.stringify(lines, null, 2);
-    downloadFile('gaming_dns.txt', txt, 'text/plain');
-    downloadFile('gaming_dns.json', json, 'application/json');
-  }
-  function exportDownload(){
-    const outDiv = el('downloadOut');
-    if(!outDiv.innerText.trim()){ alert('هیچ خروجی‌ای برای export وجود ندارد.'); return; }
-    const boxes = Array.from(outDiv.querySelectorAll('.dns-item'));
-    const lines = boxes.map(b=>{
-      const name = b.querySelector('.dns-left div').innerText;
-      const ip = b.querySelector('.small')?.innerText || '';
-      const latency = b.querySelector('span.ok, span.warn, span.bad')?.innerText || '';
-      return `${name} — ${ip} — ${latency}`;
-    });
-    downloadFile('download_dns.txt', lines.join('\n'), 'text/plain');
-    downloadFile('download_dns.json', JSON.stringify(lines,null,2), 'application/json');
-  }
-  function exportAllTop(){
-    const outDiv = el('allPingOut');
-    if(!outDiv.innerText.trim()){ alert('ابتدا Ping all را انجام بده.'); return; }
-    const boxes = Array.from(outDiv.querySelectorAll('.dns-item'));
-    const lines = boxes.map(b=>{
-      const name = b.querySelector('.dns-left div').innerText;
-      const ip = b.querySelector('.small')?.innerText || '';
-      const latency = b.querySelector('span.ok, span.warn, span.bad')?.innerText || '';
-      return `${name} — ${ip} — ${latency}`;
-    });
-    downloadFile('alltop_dns.txt', lines.join('\n'), 'text/plain');
-    downloadFile('alltop_dns.json', JSON.stringify(lines,null,2), 'application/json');
-  }
-  function exportCustom(){
-    const outDiv = el('customOut');
-    if(!outDiv.innerText.trim()){ alert('ابتدا Custom Ping را انجام بده.'); return; }
-    const boxes = Array.from(outDiv.querySelectorAll('.dns-item'));
-    const lines = boxes.map(b=>{
-      const name = b.querySelector('.dns-left div').innerText;
-      const ip = b.querySelector('.small')?.innerText || '';
-      const latency = b.querySelector('span.ok, span.warn, span.bad')?.innerText || '';
-      return `${name} — ${ip} — ${latency}`;
-    });
-    downloadFile('custom_dns.txt', lines.join('\n'), 'text/plain');
-    downloadFile('custom_dns.json', JSON.stringify(lines,null,2), 'application/json');
-  }
-
-  /**************************************************************************
-   * Utility: buildTestUrlsFor used above expects entry obj with doh/v4/v6 arrays
-   **************************************************************************/
-  function buildTestUrlsFor(entry, ipver){
-    const urls=[];
-    if(entry.doh && entry.doh.length){
-      for(const d of entry.doh){
-        if(d.includes('?')) urls.push(d);
-        else urls.push(d + '?name=example.com');
-      }
-    }
-    const ips = (ipver==='ipv6' ? (entry.v6 || []) : (entry.v4 || []));
-    for(const ip of ips){
-      if(!ip) continue;
-      if(ip.includes(':')) urls.push('https://['+ip+']/');
-      else urls.push('https://'+ip+'/');
-    }
-    return urls;
-  }
-
-  /**************************************************************************
-   * copyToClipboard wrapper used in many places
-   **************************************************************************/
-  function copyToClipboard(text){
-    navigator.clipboard.writeText(text).then(()=>{ alert('✅ کپی شد: '+text); }).catch(()=>alert('کپی ناموفق'));
-  }
-
-  // Small initialization: nothing heavy
-  (function init(){
-    // initial UI state can be set here
-  })();
-
-  </script>
+}
+</script>
 </body>
 </html>
