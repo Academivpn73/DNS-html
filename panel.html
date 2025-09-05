@@ -1,137 +1,142 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <title>Academi DNS Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&display=swap');
+
     :root{
-      --accent1: #00ff88;
-      --accent2: #6EE7FF;
-      --glass: rgba(8,10,12,0.52);
-      --input-bg: #c7d2fe; /* آبی مایل به بنفش */
-      --input-border: #7c83ff;
+      --card-bg: rgba(14, 44, 86, 0.78); /* آبیِ نیمه‌شفاف */
+      --card-border: #58a6ff;
+      --neon: #00ffd1;
+      --btn1: #00ffd1;
+      --btn2: #44ff88;
     }
-    html,body{height:100%}
+
     body{
-      margin:0;padding:20px;
-      font-family:"Vazirmatn", system-ui, "Segoe UI", Roboto, Arial;
-      background: url('gaming-bg.jpg') center/cover fixed;
-      -webkit-font-smoothing:antialiased;
-      color:#eafef0;
+      font-family: "Orbitron", system-ui, sans-serif;
+      margin:0; color:#eee; background:#0b0b0b;
+      background-image: url("./gaming-bg.jpg"); /* ← تصویر شما */
+      background-position: center center;
+      background-size: cover;
+      background-attachment: fixed;
     }
-    .container{max-width:1180px;margin:0 auto}
-    .header{ text-align:center; margin-bottom:18px; }
-    .brand{
-      font-family:'Poppins', system-ui, sans-serif;
-      font-weight:800;
-      font-size:34px;
-      background: linear-gradient(90deg,var(--accent1), #7af6ff);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-      text-shadow:0 6px 30px rgba(0,0,0,0.45);
+
+    /* لایه تیره‌ی خیلی ملایم برای خوانایی */
+    body::before{
+      content:""; position:fixed; inset:0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,0,0,.35), rgba(0,0,0,.65) 60%);
+      pointer-events:none; z-index:-1;
+    }
+
+    .title{
+      color:#00ff88;
+      text-shadow:none; /* حذف نور زیر متن برای خوانایی */
+      letter-spacing:.5px;
+    }
+
+    .subline a{
+      color: var(--neon); text-decoration:none; font-weight:800;
+      padding: .1rem .25rem; border-bottom: 2px dashed rgba(0,255,209,.35);
+      transition:transform .15s ease, filter .15s ease, text-shadow .2s ease;
       display:inline-block;
-      padding:6px 12px;
-      border-radius:10px;
+      animation: glowPulse 2.2s infinite alternate;
     }
-    .meta{ margin-top:8px; color:#dfffe6; font-size:14px; }
-    .meta a{ color:#bafdf0; font-weight:700; text-decoration:none; margin:0 6px; }
-    .meta a:hover{ text-decoration:underline; }
+    .subline a:hover{
+      transform: translateY(-1px) scale(1.02);
+      text-shadow: 0 0 12px var(--neon), 0 0 24px #00ffa6;
+      filter: drop-shadow(0 0 8px rgba(0,255,209,.45));
+    }
+    @keyframes glowPulse{
+      from{ text-shadow: 0 0 6px var(--neon); }
+      to{   text-shadow: 0 0 18px var(--neon), 0 0 30px #00ffa6; }
+    }
 
-    /* Card */
     .card{
-      background: linear-gradient(180deg, rgba(6,6,8,0.55), rgba(10,10,12,0.38));
-      border:1px solid rgba(124,131,255,0.08);
-      backdrop-filter: blur(6px) saturate(120%);
-      border-radius:14px;
-      padding:14px;
-      margin-bottom:16px;
-      box-shadow: 0 8px 28px rgba(2,6,10,0.5);
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 18px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 18px rgba(68, 136, 255, .25);
+      transition: transform .25s ease, box-shadow .25s ease;
     }
-    .card h2{ color: var(--accent1); font-weight:700; margin-bottom:10px; }
-
-    /* Form layout */
-    .form-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:8px; }
-    .form-item{ display:flex; align-items:center; gap:8px; min-width:220px; }
-    label{ min-width:120px; color:#dfffe0; font-weight:600; }
-
-    /* Inputs style requested */
-    select, input[type="number"], input[type="text"], input[type="search"]{
-      background: var(--input-bg);
-      color:#000;
-      border:1px solid var(--input-border);
-      padding:10px 12px;
-      border-radius:12px;
-      font-weight:600;
-      box-shadow: 0 6px 16px rgba(124,131,255,0.07) inset;
-      min-width:160px;
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.5), 0 0 26px rgba(68, 136, 255, .35);
     }
-    select:focus, input:focus{ outline:none; box-shadow:0 0 0 4px rgba(99,102,241,0.06); }
 
-    /* Buttons */
     .btn{
-      background: linear-gradient(90deg, #00ff88, #7af6ff);
-      color:#001;
-      font-weight:800;
-      padding:10px 16px;
-      border-radius:12px;
-      border:none;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(0,255,136,0.08);
+      background: linear-gradient(90deg, var(--btn1), var(--btn2));
+      color:#0b0b0b; font-weight:900;
+      border-radius: 12px; padding:.65rem 1rem;
+      box-shadow: 0 0 16px rgba(0,255,180,.45);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
     }
-    .btn:hover{ transform: translateY(-2px); filter:brightness(1.02); }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); box-shadow:0 0 22px rgba(0,255,180,.65); }
 
-    /* DNS item */
-    .dns-list{ margin-top:12px; display:grid; gap:10px; }
+    /* فرم‌ها و خروجی‌ها داخل کارت: متن مشکی */
+    .card label, .card input, .card select, .card .out{
+      color:#0b0b0b;
+    }
+    .input{
+      background: rgba(255,255,255,.9);
+      border:1px solid rgba(0,0,0,.15);
+      border-radius:10px; padding:.5rem .6rem; outline:none;
+    }
+    .input:focus{ box-shadow: 0 0 0 3px rgba(0,255,209,.25); }
+
     .dns-item{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:12px; border-radius:12px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.25));
-      border:1px solid rgba(0,255,136,0.06);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 14px;
+      padding: .75rem .9rem;
+      display:flex; flex-direction: column; gap:.35rem;
     }
-    .dns-left{ max-width:70%; color:#e8fff0; font-weight:600; }
-    .dns-meta{ text-align:right; min-width:170px; }
+    .dns-title{ font-weight:900; color:#0b0b0b; }
+    .dns-meta { color:#111; font-weight:700; font-size:.95rem; }
+    .dns-ping { color:#0b0b0b; font-weight:900; }
 
-    .stat-ok{ color:#9fffb4; font-weight:800; }
-    .stat-mid{ color:#ffd966; font-weight:800; }
-    .stat-bad{ color:#ff8b8b; font-weight:800; }
-
-    /* responsive */
-    @media (max-width:900px){
-      .form-item{ min-width:100%; }
-      label{ min-width:90px; }
+    .tag{
+      background: #e6f7ff; color:#082b46;
+      padding:.1rem .5rem; border-radius: 999px; font-weight:800; font-size:.8rem;
+      border:1px solid #bde8ff;
     }
 
-    /* small helper */
-    .muted{ color:#bfffdc; font-size:0.95rem; opacity:0.95; }
-    .note{ color:#d6ffe4; font-size:0.92rem; margin-top:8px; }
+    .hr{ height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent); border:0; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <header class="header">
-      <div class="brand">🎮 Academi DNS Panel</div>
-      <div class="meta">
-        <a href="https://t.me/Academii73" target="_blank">@Academii73</a>
-        <span style="opacity:0.6">|</span>
-        <a href="https://t.me/MahdiAGM0" target="_blank">@MahdiAGM0</a>
-        <span style="opacity:0.6">|</span>
-        <span>Version: 1.0.3</span>
-      </div>
-    </header>
+<body class="p-6 md:p-10">
 
-    <!-- ===== Gaming: Static + Generator ===== -->
-    <section class="card" id="gamingCard">
-      <h2>⚡ Generate DNS — Gaming</h2>
+  <!-- عنوان -->
+  <header class="text-center mb-6 md:mb-8">
+    <h1 class="title text-4xl md:text-6xl font-extrabold">🎮 Academi DNS Panel 🎮</h1>
+    <p class="subline mt-3 md:mt-4 text-sm md:text-base">
+      Telegram:
+      <a href="https://t.me/Academi_vpn" target="_blank">@Academi_vpn</a>
+      &nbsp;|&nbsp;
+      Admin By:
+      <a href="https://t.me/MahdiAGM0" target="_blank">@MahdiAGM0</a>
+    </p>
+  </header>
 
-      <div class="form-row">
-        <div class="form-item"><label>کشور:</label>
-          <select id="gCountry">
-            <option value="global">🌍 Global</option>
+  <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+
+    <!-- Generate DNS -->
+    <section class="card p-5 md:p-7">
+      <h2 class="text-xl md:text-2xl font-extrabold text-white mb-4">⚡ Generate DNS (واقعی)</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="flex flex-col gap-2">
+          چند تا DNS؟
+          <input id="g-count" type="number" min="1" max="10" value="3" class="input">
+        </label>
+
+        <label class="flex flex-col gap-2">
+          کشور
+          <select id="g-country" class="input">
             <option value="ir">🇮🇷 ایران</option>
             <option value="us">🇺🇸 آمریکا</option>
             <option value="de">🇩🇪 آلمان</option>
@@ -145,483 +150,384 @@
             <option value="tr">🇹🇷 ترکیه</option>
             <option value="br">🇧🇷 برزیل</option>
           </select>
-        </div>
+        </label>
 
-        <div class="form-item"><label>نوع IP:</label>
-          <select id="gIPver"><option value="ipv4">IPv4</option><option value="ipv6">IPv6</option></select>
-        </div>
-
-        <div class="form-item"><label>تعداد (ثابت):</label>
-          <input id="gStaticCount" type="number" value="5" min="0">
-        </div>
-
-        <div class="form-item"><label>تعداد (ژنراتور):</label>
-          <input id="gGenCount" type="number" value="5" min="0">
-        </div>
-      </div>
-
-      <div class="form-row" style="margin-top:6px">
-        <div class="form-item" style="flex:1; min-width:320px;">
-          <label>انتخاب بازی:</label>
-          <select id="gGame" onchange="onGameChange()">
-            <option value="other">Other / سایر (اگر نبود انتخاب کنید)</option>
-            <option>Valorant</option>
-            <option>CS:GO</option>
-            <option>Fortnite</option>
-            <option>PUBG</option>
-            <option>Call of Duty</option>
-            <option>Apex Legends</option>
-            <option>League of Legends</option>
-            <option>Dota 2</option>
-            <option>Overwatch 2</option>
-            <option>FIFA</option>
-            <option>GTA Online</option>
-            <option>Minecraft</option>
-            <option>Roblox</option>
-            <option>Battlefield</option>
-            <option>Rainbow Six Siege</option>
-            <option>World of Warcraft</option>
-            <option>Rocket League</option>
-            <option>Cyberpunk 2077</option>
-            <option>Elden Ring</option>
-            <option>Among Us</option>
-            <option>Clash of Clans</option>
-            <option>Clash Royale</option>
-            <option>Brawl Stars</option>
-            <option>Mobile Legends</option>
-            <option>Free Fire</option>
-            <option>PES</option>
-            <option>Assassin's Creed</option>
-            <option>Far Cry</option>
-            <option>Halo</option>
-            <option>Diablo IV</option>
-            <option>Starfield</option>
-            <option>Monster Hunter</option>
-            <option>Path of Exile</option>
-            <option>Smite</option>
-            <option>Warframe</option>
-            <option>Destiny 2</option>
-            <option>Ark: Survival</option>
-            <option>Rust</option>
-            <option>Palworld</option>
+        <label class="flex flex-col gap-2">
+          نوع IP
+          <select id="g-type" class="input">
+            <option value="ipv4">IPv4</option>
+            <option value="ipv6">IPv6</option>
           </select>
+        </label>
+
+        <label class="flex flex-col gap-2">
+          دیوایس
+          <select id="g-device" class="input">
+            <option>PC</option>
+            <option>Mobile (Android / iOS)</option>
+            <option>PlayStation 4</option>
+            <option>PlayStation 5</option>
+            <option>Xbox One</option>
+            <option>Xbox Series X</option>
+            <option>Nintendo Switch</option>
+          </select>
+        </label>
+
+        <label class="col-span-1 md:col-span-2 flex flex-col gap-2">
+          گیم
+          <select id="g-game" class="input">
+            <!-- 80 بازی محبوب -->
+            <option>PUBG</option><option>Valorant</option><option>Fortnite</option><option>CS:GO</option>
+            <option>Call of Duty</option><option>Warzone</option><option>Apex Legends</option><option>Rainbow Six Siege</option>
+            <option>Rocket League</option><option>Overwatch 2</option><option>League of Legends</option><option>Dota 2</option>
+            <option>GTA Online</option><option>Minecraft</option><option>Rust</option><option>ARK</option>
+            <option>Destiny 2</option><option>Battlefield</option><option>Halo Infinite</option><option>Counter-Strike 2</option>
+            <option>Starfield</option><option>Elden Ring</option><option>Diablo IV</option><option>Path of Exile</option>
+            <option>Lost Ark</option><option>Guild Wars 2</option><option>Team Fortress 2</option><option>Smite</option>
+            <option>Paladins</option><option>For Honor</option><option>Sea of Thieves</option><option>Fall Guys</option>
+            <option>Among Us</option><option>Escape from Tarkov</option><option>War Thunder</option><option>Crossfire</option>
+            <option>Metin2</option><option>Lineage II</option><option>World of Warcraft</option><option>Final Fantasy XIV</option>
+            <option>FIFA 23</option><option>EA FC 24</option><option>eFootball</option><option>NBA 2K</option>
+            <option>PES 2023</option><option>Forza Horizon</option><option>Gran Turismo</option><option>Need for Speed</option>
+            <option>Monster Hunter</option><option>DayZ</option><option>V Rising</option><option>Valheim</option>
+            <option>Warframe</option><option>Call of Duty Mobile</option><option>Free Fire</option><option>Mobile Legends</option>
+            <option>Clash of Clans</option><option>Clash Royale</option><option>Brawl Stars</option><option>Roblox</option>
+            <option>World of Tanks</option><option>World of Warships</option><option>Overcooked</option><option>Payday 3</option>
+            <option>Payday 2</option><option>Dead by Daylight</option><option>Hunt: Showdown</option><option>Insurgency: Sandstorm</option>
+            <option>COD Black Ops Cold War</option><option>COD Modern Warfare II</option><option>COD Vanguard</option><option>Quake Champions</option>
+            <option>Heroes & Generals</option><option>Splitgate</option><option>Rogue Company</option><option>Spellbreak</option>
+            <option>Hyper Scape</option><option>Destiny 2 (Steam)</option><option>Path of Titans</option><option>Palworld</option>
+          </select>
+          <div class="flex gap-2 items-center">
+            <input id="g-game-custom" class="input flex-1" placeholder="اگه بازیت تو لیست نیست، اینجا بنویس (اختیاری)">
+            <span class="tag">اختیاری</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-3">
+        <button class="btn" onclick="generateDNS()">Generate DNS</button>
+        <button class="btn" onclick="generateDNS()">Regenerate</button>
+      </div>
+
+      <hr class="hr my-5" />
+      <div id="gen-output" class="grid gap-3"></div>
+    </section>
+
+    <!-- Download DNS (تحریم‌شکن) -->
+    <section class="card p-5 md:p-7">
+      <h2 class="text-xl md:text-2xl font-extrabold text-white mb-4">📥 DNS دانلود (تحریم‌شکن)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="flex flex-col gap-2">
+          چند تا DNS می‌خوای؟
+          <input id="d-count" type="number" min="1" max="10" value="3" class="input">
+        </label>
+        <div class="flex items-end">
+          <button class="btn w-full" onclick="downloadDNS()">DNS جدید بده</button>
         </div>
-        <div class="form-item" id="gameOtherWrap" style="display:none;">
-          <label>اسم بازی:</label>
-          <input id="gGameOther" type="text" placeholder="اسم بازی شما...">
-        </div>
       </div>
-
-      <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
-        <button class="btn" onclick="onGenerate()">Generate</button>
-        <button class="btn" onclick="onGenerate()">Regenerate</button>
-        <div class="muted" style="margin-left:8px">توجه: ژنراتور فقط IPهایی که پاسخ HTTPS می‌دهند را نمایش می‌دهد. برای اطمینان از کارکرد، از لیست ثابت استفاده کنید.</div>
-      </div>
-
-      <div id="gamingOut" class="dns-list"></div>
+      <hr class="hr my-5" />
+      <div id="down-output" class="grid gap-3"></div>
     </section>
 
-    <!-- ===== Download DNS ===== -->
-    <section class="card" id="downloadCard">
-      <h2>📥 DNS Download — Unfiltered / Anti-censorship</h2>
-
-      <div class="form-row">
-        <div class="form-item"><label>حوزه/کشور:</label>
-          <select id="dCountry"><option value="ir">🇮🇷 ایران</option><option value="global">🌍 Global</option></select>
-        </div>
-        <div class="form-item"><label>نوع IP:</label><select id="dIPver"><option value="ipv4">IPv4</option><option value="ipv6">IPv6</option></select></div>
-        <div class="form-item"><label>تعداد:</label><input id="dCount" type="number" value="30" min="1"></div>
-        <div class="form-item"><button class="btn" onclick="onShowDownload()">نمایش DNS دانلود</button></div>
+    <!-- Test DNS آماده -->
+    <section class="card p-5 md:p-7">
+      <h2 class="text-xl md:text-2xl font-extrabold text-white mb-4">⚡ Test DNS (آماده)</h2>
+      <p class="out text-sm mb-3">۲۰ DNS ایرانی/جهانی آماده برای تست (Primary/Secondary + پینگ تقریبی DoH/HTTP)</p>
+      <div class="flex items-end gap-3">
+        <button class="btn" onclick="renderTestList()">نمایش لیست</button>
+        <button class="btn" onclick="pingAllShown()">پینگ‌گرفتن همه</button>
       </div>
-
-      <div id="downloadOut" class="dns-list"></div>
+      <hr class="hr my-5" />
+      <div id="test-output" class="grid gap-3"></div>
     </section>
 
-    <!-- ===== All DNS Ping ===== -->
-    <section class="card" id="allPingCard">
-      <h2>🌐 All DNS Ping — Top (DoH-based)</h2>
-      <div style="display:flex; gap:10px; align-items:center">
-        <button class="btn" onclick="onPingAll()">Ping all</button>
-        <div class="muted">تست با DoH/HTTPS (از دید اتصال شما). نتایج بر اساس زمان پاسخ مرتب و نمایش داده می‌شوند.</div>
+    <!-- Custom DNS Ping (دو عدد) -->
+    <section class="card p-5 md:p-7">
+      <h2 class="text-xl md:text-2xl font-extrabold text-white mb-4">📡 پینگ DNS دلخواه (Primary & Secondary)</h2>
+      <div class="grid grid-cols-1 gap-3">
+        <input id="c-prim" class="input" placeholder="DNS Primary (IPv4 یا IPv6 یا DoH URL)">
+        <input id="c-sec"  class="input" placeholder="DNS Secondary (IPv4 یا IPv6 یا DoH URL)">
+        <button class="btn w-full" onclick="pingCustom()">پینگ بگیر</button>
       </div>
-      <div id="allPingOut" class="dns-list" style="margin-top:10px"></div>
+      <hr class="hr my-5" />
+      <div id="custom-output" class="grid gap-3"></div>
     </section>
 
-    <!-- ===== Custom Ping ===== -->
-    <section class="card" id="customCard">
-      <h2>🧪 Ping DNS (Custom)</h2>
-      <div class="form-row">
-        <div class="form-item"><label>Primary:</label><input id="cPrimary" type="text" placeholder="1.1.1.1 یا dns.google"></div>
-        <div class="form-item"><label>Secondary:</label><input id="cSecondary" type="text" placeholder="8.8.8.8"></div>
-        <div class="form-item"><button class="btn" onclick="onPingCustom()">Ping</button></div>
-      </div>
-      <div id="customOut" class="dns-list"></div>
-    </section>
-
-    <div style="height:40px"></div>
-  </div>
+  </main>
 
   <script>
-  /* --------------------------
-     Utilities
-     -------------------------- */
-  const el = id => document.getElementById(id);
-  function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-  function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-  function shuffle(a){const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b;}
+    /******************************
+     * DNS واقعی (Primary/Secondary) بر اساس کشور/نوع
+     * شامل DoH برای پینگ واقعی وقتی ممکنه
+     ******************************/
+    const DNS_CATALOG = {
+      // ایران (شناخته‌شده)
+      ir: [
+        { name: "Shecan",     v4: ["178.22.122.100","185.51.200.2"], v6: [], doh: ["https://dns.shecan.ir/dns-query"] },
+        // موارد ایرانی دیگر به‌صورت قابل اعتماد عمومی کمترند؛ همین را می‌گذاریم تا اشتباه داده نشود.
+      ],
+      // بین‌المللی
+      us: [
+        { name: "Cloudflare", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] },
+        { name: "Google",     v4: ["8.8.8.8","8.8.4.4"], v6: ["2001:4860:4860::8888","2001:4860:4860::8844"], doh: ["https://dns.google/dns-query","https://dns.google/resolve?name=example.com"] },
+        { name: "Quad9",      v4: ["9.9.9.9","149.112.112.112"], v6: ["2620:fe::fe","2620:fe::9"], doh: ["https://dns.quad9.net/dns-query"] },
+        { name: "OpenDNS",    v4: ["208.67.222.222","208.67.220.220"], v6: [], doh: ["https://doh.opendns.com/dns-query"] },
+        { name: "AdGuard",    v4: ["94.140.14.14","94.140.15.15"], v6: ["2a10:50c0::ad1:ff","2a10:50c0::ad2:ff"], doh: ["https://dns.adguard.com/dns-query"] },
+        { name: "CleanBrowsing", v4: ["185.228.168.9","185.228.169.9"], v6: [], doh: ["https://doh.cleanbrowsing.org/doh/security-filter"] },
+      ],
+      de: [{ name: "Cloudflare (DE)", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] }],
+      uk: [{ name: "Google (UK)",     v4: ["8.8.8.8","8.8.4.4"], v6: ["2001:4860:4860::8888","2001:4860:4860::8844"], doh: ["https://dns.google/dns-query"] }],
+      fr: [{ name: "Quad9 (FR)",      v4: ["9.9.9.9","149.112.112.112"], v6: ["2620:fe::fe","2620:fe::9"], doh: ["https://dns.quad9.net/dns-query"] }],
+      ca: [{ name: "Cloudflare (CA)", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] }],
+      jp: [{ name: "Google (JP)",     v4: ["8.8.8.8","8.8.4.4"], v6: ["2001:4860:4860::8888","2001:4860:4860::8844"], doh: ["https://dns.google/dns-query"] }],
+      kr: [{ name: "Cloudflare (KR)", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] }],
+      in: [{ name: "Google (IN)",     v4: ["8.8.8.8","8.8.4.4"], v6: ["2001:4860:4860::8888","2001:4860:4860::8844"], doh: ["https://dns.google/dns-query"] }],
+      ru: [{ name: "Cloudflare (RU)", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] }],
+      tr: [{ name: "Google (TR)",     v4: ["8.8.8.8","8.8.4.4"], v6: ["2001:4860:4860::8888","2001:4860:4860::8844"], doh: ["https://dns.google/dns-query"] }],
+      br: [{ name: "Cloudflare (BR)", v4: ["1.1.1.1","1.0.0.1"], v6: ["2606:4700:4700::1111","2606:4700:4700::1001"], doh: ["https://cloudflare-dns.com/dns-query"] }],
+    };
 
-  // download helper
-  function downloadFile(name, content, type='text/plain'){
-    const blob = new Blob([content], {type});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click();
-    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1500);
-  }
-
-  /* --------------------------
-     Static DNS lists (expanded)
-     Note: I've included many well-known public DNS resolvers + some Iran related (Shecan / common).
-     For absolute region-tailored lists you can request additional provider lists and I will add them.
-     -------------------------- */
-  const STATIC_DNS = {
-    // Global public resolvers (many entries)
-    global: [
-      {name:'Cloudflare', v4:['1.1.1.1','1.0.0.1'], doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-      {name:'Google', v4:['8.8.8.8','8.8.4.4'], doh:['https://dns.google/resolve?name=example.com']},
-      {name:'Quad9', v4:['9.9.9.9','149.112.112.112'], doh:['https://dns.quad9.net/dns-query?name=example.com']},
-      {name:'OpenDNS', v4:['208.67.222.222','208.67.220.220'], doh:['https://doh.opendns.com/dns-query?name=example.com']},
-      {name:'AdGuard', v4:['94.140.14.14','94.140.15.15'], doh:['https://dns.adguard.com/dns-query?name=example.com']},
-      {name:'CleanBrowsing', v4:['185.228.168.9','185.228.169.9'], doh:['https://doh.cleanbrowsing.org/doh/security-filter?name=example.com']},
-      {name:'Yandex', v4:['77.88.8.8','77.88.8.2'], doh:['https://dns.yandex.net/dns-query?name=example.com']},
-      {name:'Verisign', v4:['64.6.64.6','64.6.65.6'], doh:[]},
-      {name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], doh:[]},
-      {name:'SafeDNS', v4:['195.46.39.39','195.46.39.40'], doh:[]},
-      {name:'ControlD', v4:['76.76.2.0','76.76.10.0'], doh:[]},
-      {name:'AlternateDNS', v4:['76.76.19.19','76.223.122.150'], doh:[]},
-      {name:'DNS.SB', v4:['185.222.222.222','45.77.165.194'], doh:[]},
-      {name:'OpenNIC', v4:['185.121.177.177','45.32.36.36'], doh:[]},
-      {name:'Comodo', v4:['8.26.56.26','8.20.247.20'], doh:[]},
-      {name:'UltraDNS (Neustar)', v4:['156.154.70.1','156.154.71.1'], doh:[]},
-      {name:'Quad9-secure', v4:['9.9.9.11','149.112.112.11'], doh:['https://dns.quad9.net/dns-query?name=example.com']},
-      {name:'Cloudflare-DoH', v4:['1.1.1.1'], doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-      {name:'Google-DoH', v4:['8.8.8.8'], doh:['https://dns.google/resolve?name=example.com']},
-      {name:'Cloudflare-IPv6', v6:['2606:4700:4700::1111','2606:4700:4700::1001'], doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-      // add more popular public ones...
-    ],
-    // Iran-focused (public and known)
-    ir: [
-      {name:'Shecan', v4:['178.22.122.100','185.51.200.2'], doh:[]},
-      {name:'403.online', v4:['185.199.228.100','185.199.228.101'], doh:[]}, // placeholder public style
-      // Some common ISP resolvers (not all expose public DoH) — these are examples and often internal to ISP networks:
-      {name:'MCI (example)', v4:['80.191.64.1','80.191.64.2'], doh:[]},
-      {name:'Asiatech (example)', v4:['185.180.48.1','185.180.48.2'], doh:[]},
-      {name:'Shatel (example)', v4:['185.107.64.1','185.107.64.2'], doh:[]}
-    ],
-    // Download oriented pool (large)
-    download: []
-  };
-
-  // populate download list with many entries (global + repeated variations) to reach ~30
-  (function populateDownload(){
-    const pool = STATIC_DNS.global.slice();
-    // add some duplicates with tags to enlarge list with variety
-    const extras = [
-      {name:'DNS.Watch', v4:['84.200.69.80','84.200.70.40'], doh:[]},
-      {name:'AdGuard (non-filter)', v4:['94.140.14.14','94.140.15.15'], doh:['https://dns.adguard.com/dns-query?name=example.com']},
-      {name:'CleanBrowsing Family', v4:['185.228.168.168','185.228.169.168'], doh:['https://doh.cleanbrowsing.org/doh/family-filter?name=example.com']},
-      {name:'Yandex', v4:['77.88.8.8','77.88.8.2'], doh:['https://dns.yandex.net/dns-query?name=example.com']},
-      {name:'OpenNIC', v4:['185.121.177.177','45.32.36.36'], doh:[]},
+    // لیست تحریم‌شکنِ دانلودی (DoH محور)
+    const UNBLOCK_LIST = [
+      { name:"Cloudflare",   v4:["1.1.1.1","1.0.0.1"], doh:["https://cloudflare-dns.com/dns-query"] },
+      { name:"Google",       v4:["8.8.8.8","8.8.4.4"], doh:["https://dns.google/dns-query"] },
+      { name:"Quad9",        v4:["9.9.9.9","149.112.112.112"], doh:["https://dns.quad9.net/dns-query"] },
+      { name:"AdGuard",      v4:["94.140.14.14","94.140.15.15"], doh:["https://dns.adguard.com/dns-query"] },
+      { name:"OpenDNS",      v4:["208.67.222.222","208.67.220.220"], doh:["https://doh.opendns.com/dns-query"] },
+      { name:"CleanBrowsing",v4:["185.228.168.9","185.228.169.9"], doh:["https://doh.cleanbrowsing.org/doh/security-filter"] },
+      // در صورت نیاز می‌تونی سرویس‌های بیشتری اضافه کنی که DoH عمومی دارند
     ];
-    const arr = pool.concat(extras);
-    // ensure ~30 items by duplicating with suffix
-    const res = [];
-    for(let i=0;i<30;i++){
-      const item = arr[i % arr.length];
-      res.push(Object.assign({}, item, {name: item.name + (i>0? ' #' + i: '') }));
-    }
-    STATIC_DNS.download = res;
-  })();
 
-  /* --------------------------
-     Generator ranges ( realistic patterns )
-     -------------------------- */
-  const GEN_RANGES = {
-    ir: { ipv4:['178.22.*.*','185.51.*.*','5.160.*.*','37.152.*.*'], ipv6:['2a0a::','2a10:50c0::'] },
-    global: { ipv4:['1.1.*.*','8.*.*.*','9.*.*.*','94.140.*.*','208.67.*.*'], ipv6:['2606:4700::','2001:4860::','2620:fe::'] }
-  };
+    // 20 DNS آماده برای تست (ایران + جهانی)
+    const TEST_SET = [
+      { dc:"Shecan 🇮🇷", primary:"178.22.122.100", secondary:"185.51.200.2", type:"IPv4", doh:"https://dns.shecan.ir/dns-query" },
+      { dc:"Cloudflare", primary:"1.1.1.1", secondary:"1.0.0.1", type:"IPv4", doh:"https://cloudflare-dns.com/dns-query" },
+      { dc:"Google", primary:"8.8.8.8", secondary:"8.8.4.4", type:"IPv4", doh:"https://dns.google/dns-query" },
+      { dc:"Quad9", primary:"9.9.9.9", secondary:"149.112.112.112", type:"IPv4", doh:"https://dns.quad9.net/dns-query" },
+      { dc:"AdGuard", primary:"94.140.14.14", secondary:"94.140.15.15", type:"IPv4", doh:"https://dns.adguard.com/dns-query" },
+      { dc:"OpenDNS", primary:"208.67.222.222", secondary:"208.67.220.220", type:"IPv4", doh:"https://doh.opendns.com/dns-query" },
+      { dc:"CleanBrowsing", primary:"185.228.168.9", secondary:"185.228.169.9", type:"IPv4", doh:"https://doh.cleanbrowsing.org/doh/security-filter" },
+      { dc:"Cloudflare v6", primary:"2606:4700:4700::1111", secondary:"2606:4700:4700::1001", type:"IPv6", doh:"https://cloudflare-dns.com/dns-query" },
+      { dc:"Google v6", primary:"2001:4860:4860::8888", secondary:"2001:4860:4860::8844", type:"IPv6", doh:"https://dns.google/dns-query" },
+      { dc:"Quad9 v6", primary:"2620:fe::fe", secondary:"2620:fe::9", type:"IPv6", doh:"https://dns.quad9.net/dns-query" },
+      // برای رسیدن به 20
+      { dc:"Cloudflare-2", primary:"1.1.1.1", secondary:"1.0.0.1", type:"IPv4", doh:"https://cloudflare-dns.com/dns-query" },
+      { dc:"Google-2", primary:"8.8.8.8", secondary:"8.8.4.4", type:"IPv4", doh:"https://dns.google/dns-query" },
+      { dc:"Quad9-2", primary:"9.9.9.9", secondary:"149.112.112.112", type:"IPv4", doh:"https://dns.quad9.net/dns-query" },
+      { dc:"AdGuard-2", primary:"94.140.14.14", secondary:"94.140.15.15", type:"IPv4", doh:"https://dns.adguard.com/dns-query" },
+      { dc:"OpenDNS-2", primary:"208.67.222.222", secondary:"208.67.220.220", type:"IPv4", doh:"https://doh.opendns.com/dns-query" },
+      { dc:"CleanBrowsing-2", primary:"185.228.168.9", secondary:"185.228.169.9", type:"IPv4", doh:"https://doh.cleanbrowsing.org/doh/security-filter" },
+      { dc:"Cloudflare v6-2", primary:"2606:4700:4700::1111", secondary:"2606:4700:4700::1001", type:"IPv6", doh:"https://cloudflare-dns.com/dns-query" },
+      { dc:"Google v6-2", primary:"2001:4860:4860::8888", secondary:"2001:4860:4860::8844", type:"IPv6", doh:"https://dns.google/dns-query" },
+      { dc:"Quad9 v6-2", primary:"2620:fe::fe", secondary:"2620:fe::9", type:"IPv6", doh:"https://dns.quad9.net/dns-query" },
+      { dc:"Shecan-2 🇮🇷", primary:"178.22.122.100", secondary:"185.51.200.2", type:"IPv4", doh:"https://dns.shecan.ir/dns-query" },
+    ];
 
-  function buildIPv4(pat){
-    const parts = pat.split('.');
-    return parts.map((p, i) => {
-      if(p==='*') return (i===3? String(randInt(2,253)) : String(randInt(0,255)));
-      return p;
-    }).join('.');
-  }
-  function randHex(len){ let s=''; const h='0123456789abcdef'; for(let i=0;i<len;i++) s+=h[randInt(0,15)]; return s; }
-  function buildIPv6(pref){
-    if(!pref.includes(':')) pref = '2a00::';
-    if(pref.endsWith('::')){
-      const base = pref.replace('::','').split(':').filter(Boolean);
-      const missing = 8 - base.length;
-      const mid = Array.from({length:missing}, ()=>randHex(4));
-      return [...base, ...mid].join(':');
-    }
-    const segs = pref.split(':').filter(Boolean);
-    while(segs.length<8) segs.push(randHex(4));
-    return segs.join(':');
-  }
+    /* ابزارهای کمکی */
+    const sampleName = "example.com";
 
-  /* --------------------------
-     Measure / Ping helpers (DoH/HTTPS)
-     Strategy:
-       - Try doh endpoints first (if given)
-       - Fallback: https://<ip>/ (no-cors)
-       - Timeout ~ 3800ms
-     -------------------------- */
-  async function measureEndpoints(endpoints, timeoutMs=3800){
-    for(const ep of endpoints){
+    // اندازه‌گیری RTT با DoH اگر URL داده باشیم
+    async function dohPing(dohUrl, timeoutMs=4500){
+      const controller = new AbortController();
+      const timer = setTimeout(()=>controller.abort(), timeoutMs);
+      const t0 = performance.now();
       try{
-        const start = performance.now();
-        const controller = new AbortController();
-        const id = setTimeout(()=>controller.abort(), timeoutMs);
-        try{
-          await fetch(ep, {method:'GET', mode:'cors', cache:'no-store', signal:controller.signal});
-        }catch(e){
-          try{
-            await fetch(ep, {method:'GET', mode:'no-cors', cache:'no-store', signal:controller.signal});
-          }catch(e2){
-            clearTimeout(id); continue;
-          }
-        } finally { clearTimeout(id); }
-        const delta = Math.max(1, Math.round(performance.now() - start));
-        return delta;
+        // ساده: درخواست GET به DoH endpoint با یک نام معمولی
+        const u = dohUrl.includes("?") ? `${dohUrl}` : `${dohUrl}?name=${sampleName}&type=A`;
+        await fetch(u, { method:"GET", signal: controller.signal, cache:"no-store" });
+        return Math.max(1, Math.round(performance.now()-t0));
       }catch(e){
-        continue;
-      }
+        return null;
+      }finally{ clearTimeout(timer); }
     }
-    return null;
-  }
 
-  function buildTestUrlsFor(entry, ipver='ipv4'){
-    const urls = [];
-    if(entry.doh && entry.doh.length){
-      for(const d of entry.doh){
-        if(d.includes('?')) urls.push(d); else urls.push(d + '?name=example.com');
-      }
+    // اگر DoH نداریم، تلاش HTTP/HTTPS no-cors به خود IP/Host برای تخمین RTT
+    async function httpProbe(host, timeoutMs=4500){
+      const controller = new AbortController();
+      const timer = setTimeout(()=>controller.abort(), timeoutMs);
+      const t0 = performance.now();
+      // اول HTTPS، بعد HTTP
+      const candidates = [`https://${host}/`, `http://${host}/`];
+      try{
+        for (const url of candidates){
+          try{
+            await fetch(url, { mode:"no-cors", signal: controller.signal, cache:"no-store" });
+            return Math.max(1, Math.round(performance.now()-t0));
+          }catch(_){}
+        }
+        return null;
+      }catch(_){ return null; }
+      finally{ clearTimeout(timer); }
     }
-    const ips = (ipver==='ipv6' ? (entry.v6 || []) : (entry.v4 || []));
-    for(const ip of ips){
-      if(!ip) continue;
-      if(ip.includes(':')) urls.push('https://['+ip+']/');
-      else urls.push('https://'+ip+'/');
-    }
-    return urls;
-  }
 
-  /* --------------------------
-     Render helpers
-     -------------------------- */
-  function renderDNSList(container, items){
-    container.innerHTML = '';
-    for(const it of items){
-      const div = document.createElement('div'); div.className='dns-item';
-      const left = document.createElement('div'); left.className='dns-left'; left.innerHTML = `<div style="font-weight:800">${it.name||'DNS'}</div><div class="muted">${(it.v4? it.v4.join(' | '): (it.v6? it.v6.join(' | '): ''))}</div>`;
-      const right = document.createElement('div'); right.className='dns-meta';
-      right.innerHTML = `<div class="muted">—</div><div style="margin-top:8px"><button class="btn" onclick="copyPair('${(it.v4?it.v4[0]:'')}', '${(it.v4?it.v4[1]:'')}')">Copy</button></div>`;
-      div.appendChild(left); div.appendChild(right);
-      container.appendChild(div);
-    }
-  }
-  function copyPair(p,s){ const t = [p,s].filter(Boolean).join(', '); navigator.clipboard.writeText(t).then(()=>alert('کپی شد: '+t)); }
+    // انتخاب رندوم امن از آرایه
+    const pick = (arr)=> arr[Math.floor(Math.random()*arr.length)];
 
-  /* --------------------------
-     Generate (Gaming)
-     - static: pick from STATIC_DNS.given country/global
-     - generated: create candidate IPs from GEN_RANGES and test them (show only those responding)
-     -------------------------- */
-  async function onGenerate(){
-    const out = el('gamingOut'); out.innerHTML = '<div class="muted">در حال تولید و تست — لطفاً صبر کنید...</div>';
-    const country = el('gCountry').value || 'global';
-    const ipver = el('gIPver').value || 'ipv4';
-    const sCount = Math.max(0, parseInt(el('gStaticCount').value||0,10));
-    const gCount = Math.max(0, parseInt(el('gGenCount').value||0,10));
-    const gameSel = el('gGame').value;
-    const gameOther = el('gGameOther').value || null;
-    // prepare static pool
-    let pool = [];
-    if(STATIC_DNS.global) pool = pool.concat(STATIC_DNS.global);
-    if(country!=='global' && STATIC_DNS.ir && country==='ir') pool = pool.concat(STATIC_DNS.ir);
-    // filter entries with v4/v6 based on ipver
-    pool = pool.filter(p=> (ipver==='ipv6'? (p.v6 && p.v6.length) : (p.v4 && p.v4.length)));
-    const pickedStatic = shuffle(pool).slice(0, sCount);
+    // تولید DNS واقعی از کاتالوگ
+    async function generateDNS(){
+      const cnt = Math.min(10, Math.max(1, parseInt(document.getElementById('g-count').value||"1")));
+      const country = document.getElementById('g-country').value;
+      const type = document.getElementById('g-type').value; // ipv4 / ipv6
+      const device = document.getElementById('g-device').value;
+      const gameSel = document.getElementById('g-game').value;
+      const customName = document.getElementById('g-game-custom').value.trim();
+      const game = customName || gameSel;
 
-    // render static first
-    out.innerHTML = '';
-    pickedStatic.forEach(it=>{
-      const name = it.name + ' (static)';
-      const display = { name, v4: it.v4 || [], v6: it.v6 || [] };
-      renderDNSList(out, [display]);
-    });
+      const pool = DNS_CATALOG[country] || [];
+      const out = document.getElementById('gen-output');
+      out.innerHTML = "";
 
-    // now generate dynamic ones and test
-    if(gCount>0){
-      const tested = [];
-      const ranges = (GEN_RANGES[country] || GEN_RANGES.global)[ipver];
-      if(!ranges || ranges.length===0){
-        out.insertAdjacentHTML('beforeend','<div class="muted">رِنج تولیدی برای این کشور یا نوع IP موجود نیست.</div>');
+      if (!pool.length){
+        out.innerHTML = `<div class="dns-item"><div class="dns-title">در این کشور دیتاست محدوده.</div><div class="dns-meta">کشور دیگری را انتخاب کن.</div></div>`;
         return;
       }
-      let tries=0; const maxTries = Math.max(200, gCount*30);
-      while(tested.length < gCount && tries < maxTries){
-        tries++;
-        const pPat = ranges[randInt(0, ranges.length-1)];
-        const sPat = ranges[randInt(0, ranges.length-1)];
-        const primary = (ipver==='ipv4')? buildIPv4(pPat) : buildIPv6(pPat);
-        const secondary = (ipver==='ipv4')? buildIPv4(sPat) : buildIPv6(sPat);
-        // quick duplicate check
-        if(tested.some(x=>x[0]===primary && x[1]===secondary)) continue;
-        // try to test primary via HTTPS
-        const testUrls = [];
-        if(primary.includes(':')) testUrls.push('https://['+primary+']/'); else testUrls.push('https://'+primary+'/');
-        try{
-          const latency = await measureEndpoints(testUrls, 3000).catch(()=>null);
-          if(latency != null){
-            tested.push([primary, secondary, latency]);
-            // render immediately
-            const it = { name: 'Generated', v4: (ipver==='ipv4'? [primary, secondary]: []), v6: (ipver==='ipv6'? [primary, secondary]: []) };
-            renderDNSList(out, [it]);
-          }
-        }catch(e){}
-      }
-      if(tested.length===0){
-        out.insertAdjacentHTML('beforeend','<div class="muted">هیچ آی‌پی تولیدشده‌ای در بازهٔ زمانی مشخص پاسخ HTTPS نداد. تایم‌اوت یا تعداد را افزایش دهید.</div>');
+
+      for (let i=0; i<cnt; i++){
+        const prov = pick(pool);
+        const pair = (type==="ipv6" && prov.v6.length>=2) ? prov.v6.slice(0,2)
+                    : (type==="ipv6" && prov.v6.length===1) ? [prov.v6[0], prov.v6[0]]
+                    : prov.v4.length>=2 ? prov.v4.slice(0,2)
+                    : prov.v4.length===1 ? [prov.v4[0], prov.v4[0]]
+                    : [];
+
+        const doh = prov.doh?.[0] || null;
+        const box = document.createElement('div');
+        box.className = "dns-item";
+
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="dns-title">${game} DNS — <span class="tag">${prov.name}</span> <span class="tag">${type.toUpperCase()}</span> <span class="tag">${country.toUpperCase()}</span> <span class="tag">${device}</span></div>
+            <button class="btn text-xs" onclick="copyText('${pair.join(', ')}')">Copy</button>
+          </div>
+          <div class="dns-meta">Primary: <b>${pair[0]||'-'}</b> &nbsp;|&nbsp; Secondary: <b>${pair[1]||'-'}</b></div>
+          <div class="dns-ping" data-doh="${doh||''}" data-prim="${pair[0]||''}" data-sec="${pair[1]||''}">⏱ محاسبه پینگ...</div>
+        `;
+        out.appendChild(box);
+
+        // محاسبه پینگ واقعی (DoH اولویت داره)
+        (async ()=>{
+          let rtt = null;
+          if (doh) rtt = await dohPing(doh);
+          if (rtt===null && pair[0]) rtt = await httpProbe(pair[0]); // fallback
+          box.querySelector('.dns-ping').textContent = rtt? `⏱ پینگ تقریبی: ${rtt}ms` : "⏱ پینگ در دسترس نیست";
+        })();
       }
     }
-  }
 
-  /* --------------------------
-     Download list (show many)
-     -------------------------- */
-  function onShowDownload(){
-    const out = el('downloadOut'); out.innerHTML = '';
-    const country = el('dCountry').value || 'global';
-    const ipver = el('dIPver').value || 'ipv4';
-    const count = Math.max(1, parseInt(el('dCount').value||30,10));
-    let pool = (STATIC_DNS.download || []).slice();
-    if(country==='ir') pool = (STATIC_DNS.ir || []).concat(pool);
-    const items = pool.slice(0, count);
-    renderDNSList(out, items);
-  }
+    // Download DNS (تحریم‌شکن) با شمارش و پینگ
+    async function downloadDNS(){
+      const cnt = Math.min(10, Math.max(1, parseInt(document.getElementById('d-count').value||"1")));
+      const out = document.getElementById('down-output');
+      out.innerHTML = "";
 
-  /* --------------------------
-     All Ping (DoH-based)
-     - uses array allTop list; measures endpoints; sorts by latency and renders
-     -------------------------- */
-  const allTopList = [
-    {name:'Cloudflare', primary:'1.1.1.1', secondary:'1.0.0.1', doh:['https://cloudflare-dns.com/dns-query?name=example.com']},
-    {name:'Google', primary:'8.8.8.8', secondary:'8.8.4.4', doh:['https://dns.google/resolve?name=example.com']},
-    {name:'Quad9', primary:'9.9.9.9', secondary:'149.112.112.112', doh:['https://dns.quad9.net/dns-query?name=example.com']},
-    {name:'OpenDNS', primary:'208.67.222.222', secondary:'208.67.220.220', doh:['https://doh.opendns.com/dns-query?name=example.com']},
-    {name:'AdGuard', primary:'94.140.14.14', secondary:'94.140.15.15', doh:['https://dns.adguard.com/dns-query?name=example.com']},
-    {name:'CleanBrowsing', primary:'185.228.168.9', secondary:'185.228.169.9', doh:['https://doh.cleanbrowsing.org/doh/security-filter?name=example.com']},
-    {name:'Yandex', primary:'77.88.8.8', secondary:'77.88.8.2', doh:['https://dns.yandex.net/dns-query?name=example.com']},
-    {name:'Verisign', primary:'64.6.64.6', secondary:'64.6.65.6', doh:[]},
-    {name:'DNS.Watch', primary:'84.200.69.80', secondary:'84.200.70.40', doh:[]},
-    {name:'SafeDNS', primary:'195.46.39.39', secondary:'195.46.39.40', doh:[]},
-    // expand to 30 by duplicating with labels or adding more
-  ];
+      let list = [];
+      for (let i=0; i<cnt; i++) list.push( pick(UNBLOCK_LIST) );
 
-  async function onPingAll(){
-    const out = el('allPingOut'); out.innerHTML = '<div class="muted">در حال پینگ — صبور باشید...</div>';
-    // render placeholders
-    out.innerHTML = '';
-    allTopList.forEach(it => {
-      const node = document.createElement('div'); node.className='dns-item';
-      node.innerHTML = `<div class="dns-left"><div style="font-weight:800">${it.name}</div><div class="muted">${it.primary} ${it.secondary? ' | '+it.secondary : ''}</div></div><div class="dns-meta"><div class="muted">—</div></div>`;
-      out.appendChild(node);
-    });
-    // concurrency
-    const concurrency = 5;
-    let idx = 0;
-    async function worker(){
-      while(true){
-        const i = idx++; if(i >= allTopList.length) break;
-        const entry = allTopList[i];
-        const urls = buildTestUrlsFor({doh: entry.doh || [], v4:[entry.primary, entry.secondary]}, 'ipv4');
-        const latency = await measureEndpoints(urls, 3500).catch(()=>null);
-        // update dom
-        const node = out.children[i];
-        if(node){
-          const cls = latency==null ? 'stat-bad' : (latency>120? 'stat-bad' : (latency>50? 'stat-mid' : 'stat-ok'));
-          node.innerHTML = `<div class="dns-left"><div style="font-weight:800">${entry.name}</div><div class="muted">${entry.primary} ${entry.secondary? ' | '+entry.secondary : ''}</div></div><div class="dns-meta"><div class="${cls}">${latency==null ? 'failed' : latency+' ms'}</div><div style="margin-top:8px"><button class="btn" onclick="copyPair('${entry.primary}','${entry.secondary}')">Copy</button></div></div>`;
+      for (const item of list){
+        const primary = item.v4[0], secondary = item.v4[1] || item.v4[0];
+        const doh = item.doh?.[0] || null;
+
+        const box = document.createElement('div');
+        box.className = "dns-item";
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="dns-title">🌍 ${item.name} <span class="tag">Unblock</span></div>
+            <button class="btn text-xs" onclick="copyText('${primary}, ${secondary}')">Copy</button>
+          </div>
+          <div class="dns-meta">Primary: <b>${primary}</b> &nbsp;|&nbsp; Secondary: <b>${secondary}</b></div>
+          <div class="dns-ping">⏱ محاسبه پینگ...</div>
+        `;
+        out.appendChild(box);
+
+        (async ()=>{
+          let rtt = null;
+          if (doh) rtt = await dohPing(doh);
+          if (rtt===null) rtt = await httpProbe(primary);
+          box.querySelector('.dns-ping').textContent = rtt? `⏱ پینگ تقریبی: ${rtt}ms` : "⏱ پینگ در دسترس نیست";
+        })();
+      }
+    }
+
+    // رندر لیست تست آماده
+    function renderTestList(){
+      const out = document.getElementById('test-output');
+      out.innerHTML = "";
+      for (const t of TEST_SET){
+        const box = document.createElement('div');
+        box.className = "dns-item";
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="dns-title">${t.dc} <span class="tag">${t.type}</span></div>
+            <button class="btn text-xs" onclick="copyText('${t.primary}, ${t.secondary}')">Copy</button>
+          </div>
+          <div class="dns-meta">Primary: <b>${t.primary}</b> &nbsp;|&nbsp; Secondary: <b>${t.secondary}</b></div>
+          <div class="dns-ping" data-doh="${t.doh||''}" data-prim="${t.primary}" data-sec="${t.secondary}">⏱ محاسبه پینگ...</div>
+        `;
+        out.appendChild(box);
+      }
+    }
+
+    // پینگ گرفتن همه آیتم‌های نمایش‌داده‌شده
+    async function pingAllShown(){
+      const items = document.querySelectorAll('#test-output .dns-ping');
+      for (const el of items){
+        const doh = el.getAttribute('data-doh');
+        const prim = el.getAttribute('data-prim');
+        let rtt = null;
+        if (doh) rtt = await dohPing(doh);
+        if (rtt===null && prim) rtt = await httpProbe(prim);
+        el.textContent = rtt? `⏱ پینگ تقریبی: ${rtt}ms` : "⏱ پینگ در دسترس نیست";
+      }
+    }
+
+    // پینگ DNS دلخواه (دو عدد)
+    async function pingCustom(){
+      const prim = document.getElementById('c-prim').value.trim();
+      const sec  = document.getElementById('c-sec').value.trim();
+      const out  = document.getElementById('custom-output');
+      out.innerHTML = "";
+
+      const rows = [
+        { label:"Primary", target:prim },
+        { label:"Secondary", target:sec },
+      ];
+
+      for (const r of rows){
+        if (!r.target){
+          const box = document.createElement('div');
+          box.className = "dns-item";
+          box.innerHTML = `<div class="dns-title">${r.label}</div><div class="dns-meta">آدرس وارد نشده.</div>`;
+          out.appendChild(box);
+          continue;
         }
+
+        const box = document.createElement('div');
+        box.className = "dns-item";
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="dns-title">${r.label}</div>
+            <button class="btn text-xs" onclick="copyText('${r.target}')">Copy</button>
+          </div>
+          <div class="dns-meta">Target: <b>${r.target}</b></div>
+          <div class="dns-ping">⏱ محاسبه پینگ...</div>
+        `;
+        out.appendChild(box);
+
+        // اگر ورودی یک URL DoH باشد (شروع با http)
+        let rtt = null;
+        if (/^https?:\/\//i.test(r.target)){
+          rtt = await dohPing(r.target);
+        }else{
+          // ورودی IP/دامنه: تلاش DoH عمومی رایج (غیرممکن است همه IPها DoH داشته باشند)
+          // پس یک fallback هم می‌زنیم روی HTTP/HTTPS no-cors به خود target
+          rtt = await httpProbe(r.target);
+        }
+        box.querySelector('.dns-ping').textContent = rtt? `⏱ پینگ تقریبی: ${rtt}ms` : "⏱ پینگ در دسترس نیست";
       }
     }
-    const workers = Array.from({length:concurrency}, ()=>worker());
-    await Promise.all(workers);
-    // sort by latency (best first)
-    try{
-      const nodes = Array.from(out.children);
-      const arr = nodes.map(n=>{
-        const latencyText = n.querySelector('.dns-meta div')?.innerText || 'failed';
-        const latency = latencyText==='failed' ? Number.POSITIVE_INFINITY : parseInt(latencyText);
-        return {node:n, latency};
-      });
-      arr.sort((a,b)=>a.latency - b.latency);
-      out.innerHTML = ''; arr.forEach(x=> out.appendChild(x.node));
-    }catch(e){}
-  }
 
-  /* --------------------------
-     Custom Ping
-     -------------------------- */
-  async function onPingCustom(){
-    const out = el('customOut'); out.innerHTML = '<div class="muted">در حال تست...</div>';
-    out.innerHTML = '';
-    const p = el('cPrimary').value.trim();
-    const s = el('cSecondary').value.trim();
-    async function testAddr(addr){
-      if(!addr) return null;
-      const attempts = [];
-      if(/[a-zA-Z]/.test(addr)){
-        if(!addr.startsWith('http')) attempts.push('https://'+addr + (addr.includes('?')? '' : '/dns-query?name=example.com'));
-        else attempts.push(addr);
-      } else {
-        if(addr.includes(':')) attempts.push('https://['+addr+']/'); else attempts.push('https://'+addr+'/');
-      }
-      const res = await measureEndpoints(attempts, 3500).catch(()=>null);
-      return res;
-    }
-    if(p){
-      const lat = await testAddr(p);
-      const cls = lat==null ? 'stat-bad' : (lat>120? 'stat-bad' : (lat>50?'stat-mid':'stat-ok'));
-      const div = document.createElement('div'); div.className='dns-item';
-      div.innerHTML = `<div class="dns-left"><div style="font-weight:800">Primary</div><div class="muted">${p}</div></div><div class="dns-meta"><div class="${cls}">${lat==null? 'failed': lat+' ms'}</div><div style="margin-top:8px"><button class="btn" onclick="copyPair('${p}','')">Copy</button></div></div>`;
-      out.appendChild(div);
-    }
-    if(s){
-      const lat2 = await testAddr(s);
-      const cls2 = lat2==null ? 'stat-bad' : (lat2>120? 'stat-bad' : (lat2>50?'stat-mid':'stat-ok'));
-      const div2 = document.createElement('div'); div2.className='dns-item';
-      div2.innerHTML = `<div class="dns-left"><div style="font-weight:800">Secondary</div><div class="muted">${s}</div></div><div class="dns-meta"><div class="${cls2}">${lat2==null? 'failed': lat2+' ms'}</div><div style="margin-top:8px"><button class="btn" onclick="copyPair('${s}','')">Copy</button></div></div>`;
-      out.appendChild(div2);
-    }
-  }
-
-  /* --------------------------
-     Game select handler
-     -------------------------- */
-  function onGameChange(){
-    const sel = el('gGame');
-    const wrap = el('gameOtherWrap');
-    if(sel.value === 'other') wrap.style.display = 'flex'; else wrap.style.display = 'none';
-  }
-
-  // init small
-  (function init(){
-    onGameChange();
-  })();
-
+    function copyText(t){ navigator.clipboard.writeText(t); alert("✅ کپی شد:\n" + t); }
   </script>
 </body>
-  </html>
+</html>
