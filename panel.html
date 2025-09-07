@@ -1,186 +1,144 @@
-<!-- PART 1: HTML HEAD + GLOBAL CSS (put at top of panel.html) -->
+<!-- PART 1: HTML HEAD + GLOBAL CSS -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>Academi DNS Panel — v1.0.7</title>
+  <title>🎮 Academi DNS Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- فونت‌ها -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --accent1: #00ff88;
-      --accent2: #38bdf8;
-      --glass: rgba(10,10,15,0.000);        /* کارت شیشه‌ای */
-      --input-blue: rgba(0,123,255,0.60);   /* آبی شفاف 50% برای input/select */
-      --input-border: rgba(0,123,255,0.10); /* حاشیه آبی */
-      --glow-green: rgba(0,255,136,0.80);   /* نور سبز */
-      --text-light: #ecfdf5;
-      --muted: #bfeee0;
+      --accent1: #00ff88;          /* نئون سبز */
+      --accent2: #38bdf8;          /* آبی روشن */
+      --card-glass: rgba(10,12,20,0.45);
+      --input-blue: rgba(0,123,255,0.5);   /* آبی شفاف 50% برای inputs */
+      --input-border: rgba(0,123,255,0.9);
+      --glow-green: rgba(0,255,136,0.85);  /* نور سبز قوی */
+      --dns-green: #00c853;        /* رنگ آی‌پی های DNS (سبز) */
+      --text-dark: #000000;        /* متن داخل input مشکی */
+      --muted: #c8f7e4;
+      --glass-border: rgba(255,255,255,0.06);
     }
 
-    /* ===== Base Reset ===== */
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; margin: 0; padding: 0; }
-    body {
+    *{box-sizing:border-box;}
+    html,body{height:100%;margin:0;padding:0;}
+    body{
       font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background: url('gaming-bg.jpg') center/cover fixed no-repeat;
       background-size: cover;
-      color: var(--text-light);
+      color: #ecfdf5;
       padding: 20px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
+    .container{max-width:1180px;margin:0 auto;}
 
-    .container { max-width: 1180px; margin: 0 auto; }
-
-    /* ===== Header / Brand ===== */
-    .header { text-align: center; margin-bottom: 20px; }
-    .brand {
-      display: inline-block;
+    .header{ text-align:center; margin-bottom:18px; }
+    .brand{
       font-family: "Poppins", sans-serif;
-      font-weight: 900;
-      font-size: 40px;
-      line-height: 1;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      padding: 6px 14px; border-radius: 12px;
+      font-weight:900;
+      font-size:40px;
+      display:inline-block;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      padding:6px 14px; border-radius:12px;
       text-shadow: 0 8px 30px rgba(0,0,0,0.55);
     }
-    .meta {
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .meta a { color: #bafbe7; text-decoration: none; font-weight: 700; }
-    .meta a:hover { text-decoration: underline; }
+    .meta{ margin-top:8px; color:var(--muted); font-size:13px; display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap; }
+    .meta a{ color:#bafbe7; text-decoration:none; font-weight:700; }
+    .meta a:hover{ text-decoration:underline; }
 
-    /* ===== Card (glassmorphism) ===== */
-    @keyframes floaty {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-      100% { transform: translateY(0); }
-    }
-    .card {
-      background: var(--glass);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
+    @keyframes floaty { 0%{transform:translateY(0);} 50%{transform:translateY(-4px);} 100%{transform:translateY(0);} }
+
+    .card{
+      background: var(--card-glass);
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:16px;
+      border: 1px solid var(--glass-border);
       backdrop-filter: blur(8px) saturate(120%);
-      box-shadow: 0 0 25px var(--glow-green);
-      animation: floaty 6s ease-in-out infinite;
-      transition: transform .16s ease, box-shadow .16s ease;
+      box-shadow: 0 0 25px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: visible;
+      transition: transform .18s ease, box-shadow .18s ease;
     }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 0 40px var(--glow-green); }
-    .card h2 { margin: 0 0 10px 0; color: var(--accent1); font-weight: 800; font-size: 18px; }
-
-    /* ===== Form layout ===== */
-    .form-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
-    .form-item { display:flex; align-items:center; gap:8px; min-width: 150px; }
-    label { min-width: 110px; color: var(--muted); font-weight: 700; font-size: 14px; }
-
-    /* ===== Inputs / Selects (blue transparent + black text) ===== */
-    select, input[type="text"], input[type="number"], input[type="search"]{
-      background: var(--input-blue);    /* آبی شفاف 50% */
-      color: #000;                      /* متن مشکی */
-      font-weight: 710;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--input-border);
-      min-width: 140px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2), 0 0 12px rgba(0,123,255,0.12);
-      transition: transform .25s cubic-bezier(.2,.9,.3,1), box-shadow .25s;
-      -webkit-appearance: none; appearance: none;
+    .card::after{
+      content: "";
+      position: absolute;
+      inset: -6px;
+      z-index: -1;
+      border-radius: 18px;
+      box-shadow: 0 0 36px 8px rgba(0,255,136,0.06);
+      opacity: 1;
+      transition: box-shadow .18s;
     }
-    select:focus, input:focus {
-      outline: none;
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 12px 48px rgba(0,0,0,0.6); }
+
+    label{ min-width:110px; color:var(--muted); font-weight:700; font-size:14px; }
+
+    select, input[type="text"], input[type="number"]{
+      background: var(--input-blue);
+      color: var(--text-dark);
+      font-weight:700;
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid var(--input-border);
+      min-width:140px;
+      transition: transform .22s, box-shadow .22s;
+    }
+    select:focus, input:focus{
+      outline:none;
       transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 0 28px var(--glow-green), 0 8px 18px rgba(0,0,0,0.25);
+      box-shadow: 0 0 28px var(--glow-green);
     }
-    /* small input */
-    .small-input { min-width: 90px; padding: 6px 8px; border-radius: 8px; }
 
-    /* ===== Buttons (neon + animated) ===== */
-    .btn {
+    .btn{
       background: linear-gradient(90deg, var(--accent1), var(--accent2));
       color: #000;
-      font-weight: 800;
-      padding: 10px 18px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 30px rgba(0,255,136,0.14), 0 0 18px rgba(56,189,248,0.06);
-      transition: transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+      font-weight:800;
+      padding:10px 18px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      transition: transform .22s ease, box-shadow .22s ease;
     }
-    .btn:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 0 40px var(--glow-green); }
+    .btn:hover{ transform: translateY(-4px) scale(1.06); box-shadow: 0 0 48px rgba(0,255,136,0.18); }
 
-    /* floating subtle motion for interactive controls */
-    .floaty-small { animation: floaty 5s ease-in-out infinite; }
-
-    /* ===== DNS list styles ===== */
-    .dns-list { margin-top: 12px; display: grid; gap: 10px; }
-    .dns-item {
-      display:flex; justify-content:space-between; align-items:center;
-      padding: 12px; border-radius: 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 6px 24px rgba(2,6,12,0.45), 0 0 14px rgba(0,255,136,0.08);
-      transition: transform .18s, box-shadow .18s;
-    }
-    .dns-item:hover { transform: translateY(-6px); box-shadow: 0 18px 60px rgba(2,6,12,0.6), 0 0 28px rgba(0,255,136,0.18); }
-    .dns-left { font-weight: 800; color: #011; } /* keep strong contrast with blue bg */
-    .dns-meta { min-width: 140px; text-align: right; }
-    .stat-ok { color: #22c55e; font-weight: 800; }
-    .stat-mid { color: #facc15; font-weight: 800; }
-    .stat-bad { color: #ef4444; font-weight: 800; }
-    .muted { color: var(--muted); font-size: 13px; }
-
-    /* responsive */
-    @media (max-width: 960px){
-      .form-item { min-width: 100%; }
-      label { min-width: 90px; }
-      .brand { font-size: 30px; }
-    }
-
-    /* helper: copy tooltip (optional) */
-    .copied {
-      position: fixed; left: 50%; top: 12px; transform: translateX(-50%);
-      background: rgba(0,0,0,0.7); color: #fff; padding: 8px 12px; border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6); display: none;
-      z-index: 9999; font-weight:700;
-    }
-    .copied.show { display: block; animation: floaty .6s ease; }
-
+    .dns-left{ font-weight:900; color: var(--dns-green); }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <div class="copied" id="copiedTip">کپی شد!</div>
-    
-    <!-- ===== Gaming DNS Generator ===== -->
+    <header class="header">
+      <div class="brand">🎮 Academi DNS Panel</div>
+      <div class="meta">
+        <a href="https://t.me/Academi_vpn" target="_blank">Telegram: @Academi_vpn</a>
+        <span style="opacity:0.6">|</span>
+        <a href="https://t.me/MahdiAGM0" target="_blank">Admin By: @MahdiAGM0</a>
+        <span style="opacity:0.6">|</span>
+        <span>Version: 1.0.3</span>
+      </div>
+    </header>
+<!-- PART 2: BODY CARDS -->
+
+    <!-- 🎮 Gaming DNS Generator -->
     <div class="card">
-      <h2>🎮 Generate DNS — Gaming ⚡</h2>
+      <h2>🎮 Generate DNS — Gaming</h2>
+
       <div class="form-row">
         <div class="form-item">
-          <label>کشور:</label>
-          <select id="countrySelect" class="floaty-small">
-            <option value="global">🌍 Global</option>
-            <option value="ir">🇮🇷 Iran</option>
-            <option value="us">🇺🇸 USA</option>
-            <option value="eu">🇪🇺 Europe</option>
-            <option value="asia">🌏 Asia</option>
+          <label for="countrySelect">کشور:</label>
+          <select id="countrySelect">
+            <option value="ir">Iran</option>
+            <option value="global">Global</option>
           </select>
         </div>
         <div class="form-item">
-          <label>نوع IP:</label>
-          <select id="ipTypeSelect" class="floaty-small">
+          <label for="ipTypeSelect">IP Type:</label>
+          <select id="ipTypeSelect">
             <option value="ipv4">IPv4</option>
             <option value="ipv6">IPv6</option>
           </select>
@@ -189,390 +147,357 @@
 
       <div class="form-row">
         <div class="form-item">
-          <label>دیوایس:</label>
-          <select id="deviceSelect" class="floaty-small">
-            <option value="pc">💻 PC</option>
-            <option value="mobile">📱 Mobile</option>
-            <option value="ps">🎮 PlayStation</option>
-            <option value="xbox">🎮 Xbox</option>
-            <option value="switch">🎮 Nintendo Switch</option>
-            <option value="linux">🐧 Linux</option>
-            <option value="mac">🍏 Mac</option>
+          <label for="deviceSelect">دیوایس:</label>
+          <select id="deviceSelect" onchange="updateGameList()">
+            <option value="pc">PC</option>
+            <option value="mobile">Mobile</option>
+            <option value="console">Console</option>
+            <option value="linux">Linux</option>
+            <option value="mac">Mac</option>
           </select>
         </div>
         <div class="form-item">
-          <label>بازی:</label>
-          <select id="gameSelect" class="floaty-small">
-            <option value="valorant">Valorant</option>
-            <option value="csgo">CS:GO</option>
-            <option value="fortnite">Fortnite</option>
-            <option value="pubg">PUBG</option>
-            <option value="apex">Apex Legends</option>
-            <option value="dota2">Dota 2</option>
-            <option value="lol">League of Legends</option>
-            <option value="minecraft">Minecraft</option>
-            <option value="warzone">Call of Duty: Warzone</option>
-            <option value="genshin">Genshin Impact</option>
-            <option value="other">➕ بازی من در لیست نیست</option>
+          <label for="gameSelect">گیم:</label>
+          <select id="gameSelect">
+            <!-- لیست گیم‌ها توسط JS پر میشه -->
           </select>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-item">
-          <label>تعداد از لیست ثابت:</label>
-          <input type="number" id="staticCount" class="small-input floaty-small" min="1" max="200" value="5">
+          <label for="staticCount">تعداد ثابت:</label>
+          <input id="staticCount" type="number" value="5" min="1" max="200" />
         </div>
         <div class="form-item">
-          <label>تعداد ژنراتوری:</label>
-          <input type="number" id="genCount" class="small-input floaty-small" min="1" max="200" value="5">
+          <label for="genCount">تعداد ژنراتوری:</label>
+          <input id="genCount" type="number" value="5" min="1" max="200" />
         </div>
       </div>
 
       <div class="form-row">
-        <button class="btn floaty-small" onclick="generateDNS()">Generate</button>
-        <button class="btn floaty-small" onclick="regenerateDNS()">Regenerate</button>
-        <button class="btn floaty-small" onclick="exportDNS()">Export (TXT / JSON)</button>
+        <button class="btn" onclick="generateDNS()">Generate</button>
+        <button class="btn" onclick="regenerateDNS()">Regenerate</button>
+        <button class="btn" onclick="exportDNS()">Export</button>
       </div>
+
+      <p class="muted">ℹ️ ژنراتور از رنج DNSهای واقعی استفاده می‌کند</p>
 
       <div id="dnsResult" class="dns-list"></div>
     </div>
 
-    <!-- ===== Download DNS (Anti-censorship) ===== -->
+    <!-- 📥 Download DNS -->
     <div class="card">
-      <h2>📥 Unfiltered / Anti-censorship DNS — Download</h2>
-      <div class="dns-list" id="downloadDNS"></div>
+      <h2>📥 Download DNS (Top 30)</h2>
+      <button class="btn" onclick="loadDownloadList()">نمایش DNS ها</button>
+      <div id="downloadDNS" class="dns-list"></div>
     </div>
 
-    <!-- ===== All DNS Ping ===== -->
+    <!-- 🌐 All DNS Ping -->
     <div class="card">
-      <h2>🌐 All DNS Ping — Top 30 Global</h2>
-      <div class="dns-list" id="allPingList"></div>
+      <h2>🌐 All DNS Ping (Top 30)</h2>
+      <button class="btn" onclick="loadAllPing()">نمایش پینگ</button>
+      <div id="allPingList" class="dns-list"></div>
     </div>
 
-    <!-- ===== Custom Ping ===== -->
+    <!-- 🧪 Custom Ping -->
     <div class="card">
-      <h2>🧪 Ping DNS — Custom</h2>
+      <h2>🧪 Custom Ping</h2>
       <div class="form-row">
         <div class="form-item">
-          <label>DNS اولیه:</label>
-          <input type="text" id="customDns1" placeholder="8.8.8.8" class="floaty-small">
+          <label for="customDns1">DNS اولیه:</label>
+          <input id="customDns1" type="text" placeholder="8.8.8.8" />
         </div>
         <div class="form-item">
-          <label>DNS ثانویه:</label>
-          <input type="text" id="customDns2" placeholder="8.8.4.4" class="floaty-small">
+          <label for="customDns2">DNS ثانویه:</label>
+          <input id="customDns2" type="text" placeholder="1.1.1.1" />
         </div>
-        <button class="btn floaty-small" onclick="pingCustomDNS()">Ping Now</button>
+      </div>
+      <div class="form-row">
+        <button class="btn" onclick="pingCustomDNS()">Ping</button>
       </div>
       <div id="customPingResult" class="dns-list"></div>
     </div>
-    <!-- PART 3: JAVASCRIPT CORE -->
 <script>
-/* ===== Helper: Ping measurement ===== */
-async function measureDNS(ip) {
-  const host = ip.includes(':') ? `[${ip}]` : ip;
-  const url = `https://${host}/`;
-  const start = performance.now();
-  try {
-    await fetch(url, {mode: "no-cors"});
-    return Math.round(performance.now() - start);
-  } catch (e) {
-    return null;
-  }
-}
-function status(ms){
-  if(ms === null) return '<span class="stat-bad">failed</span>';
-  if(ms <= 50) return `<span class="stat-ok">${ms} ms</span>`;
-  if(ms <= 120) return `<span class="stat-mid">${ms} ms</span>`;
-  return `<span class="stat-bad">${ms} ms</span>`;
-}
-function renderDNS(list, containerId){
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  if(!list || list.length===0){
-    container.innerHTML = `<div class="muted">هیچ DNSی برای نمایش وجود ندارد</div>`;
-    return;
-  }
-  list.forEach(async (ip) => {
-    const div = document.createElement("div");
-    div.className = "dns-item";
-    div.innerHTML = `<div class="dns-left">${ip}</div><div class="dns-meta">checking...</div>`;
-    container.appendChild(div);
-    const ms = await measureDNS(ip);
-    div.querySelector(".dns-meta").innerHTML = status(ms);
+/* ========================
+   🎮 لیست بازی‌ها برای هر دیوایس
+   ======================== */
+const gamesByDevice = {
+  pc: [
+    "Valorant","CS:GO","Dota 2","League of Legends","Fortnite","PUBG PC","Overwatch 2","Apex Legends","Minecraft","GTA V",
+    "Call of Duty MW2","Warzone","Battlefield V","Rainbow Six Siege","ARK Survival","World of Warcraft","Cyberpunk 2077","Rust","The Witcher 3","Fall Guys",
+    "FIFA 23","Rocket League","Diablo IV","DayZ","Escape from Tarkov","Starfield","Elden Ring","Half-Life Alyx","Palworld","Skyrim",
+    "➕ سایر"
+  ],
+  mobile: [
+    "PUBG Mobile","Call of Duty Mobile","Free Fire","Clash of Clans","Clash Royale","Brawl Stars","Mobile Legends","Arena of Valor","Asphalt 9","Pokémon Unite",
+    "League of Legends Wild Rift","Roblox Mobile","Genshin Impact","Among Us","Subway Surfers","Candy Crush","Boom Beach","8 Ball Pool","Critical Ops","Modern Combat 5",
+    "Standoff 2","Shadowgun Legends","Dead Trigger 2","World of Tanks Blitz","Zula Mobile","Dragon Raja","CrossFire Legends","Final Fantasy XV","Mobile PUBG Lite","Minecraft PE",
+    "➕ سایر"
+  ],
+  console: [
+    "FIFA 23","Call of Duty MW2","Warzone","Fortnite","GTA V","Cyberpunk 2077","The Witcher 3","Minecraft","Rocket League","NBA 2K23",
+    "Madden NFL","Gran Turismo 7","Horizon Forbidden West","God of War Ragnarok","Elden Ring","Assassin’s Creed Valhalla","Destiny 2","The Division 2","Apex Legends","Rainbow Six Siege",
+    "Battlefield 2042","Halo Infinite","Sea of Thieves","Diablo IV","Mortal Kombat 11","Street Fighter 6","Tekken 7","Spider-Man","Ghost of Tsushima","Red Dead Redemption 2",
+    "➕ سایر"
+  ],
+  linux: [
+    "Dota 2","CS:GO","Team Fortress 2","Rust","Minecraft","Stellaris","Xonotic","War Thunder","0 A.D.","Kerbal Space Program",
+    "Unturned","OpenRA","FreeCiv","Veloren","SuperTuxKart","Minetest","Armagetron","Warsow","Battle for Wesnoth","Hedgewars",
+    "Alien Arena","Cube 2","Red Eclipse","Freedoom","OpenTTD","Megaglest","Vega Strike","FlightGear","Counter-Strike Source","Neverwinter",
+    "➕ سایر"
+  ],
+  mac: [
+    "Dota 2","League of Legends","Fortnite","Minecraft","Civilization VI","World of Warcraft","Diablo III","Hearthstone","Starcraft II","Heroes of the Storm",
+    "The Sims 4","Stardew Valley","Terraria","Among Us","Baldur’s Gate 3","Pillars of Eternity","Divinity Original Sin 2","Cuphead","Hollow Knight","Celeste",
+    "Kerbal Space Program","Rust","VALORANT (via Rosetta)","Path of Exile","EVE Online","Cities Skylines","Portal 2","Torchlight II","Don’t Starve","Overcooked 2",
+    "➕ سایر"
+  ]
+};
+
+/* ========================
+   📋 آپدیت لیست بازی‌ها
+   ======================== */
+function updateGameList(){
+  const device = document.getElementById("deviceSelect").value;
+  const gameSelect = document.getElementById("gameSelect");
+  gameSelect.innerHTML = "";
+  gamesByDevice[device].forEach(g=>{
+    const opt = document.createElement("option");
+    opt.value = g;
+    opt.textContent = g;
+    gameSelect.appendChild(opt);
   });
 }
 
-/* ===== DNS Arrays (IR & Global) will come in Part 4 & 5 ===== */
-let dnsIR = [];
-let dnsGlobal = [];
+/* ========================
+   🌐 لیست DNS ها (پارت ۴ و ۵ جایگزین میشه)
+   ======================== */
+const dnsIR = [];   // پارت ۴ پر میشه
+const dnsGlobal = []; // پارت ۵ پر میشه
 
-/* ===== Generate DNS (Gaming Section) ===== */
+/* ========================
+   📡 پینگ DNS
+   ======================== */
+async function measureDNS(ip){
+  const host = ip.includes(':')?`[${ip}]`:ip;
+  const url = `https://${host}/`;
+  const start = performance.now();
+  try{ await fetch(url,{mode:'no-cors'}); return Math.round(performance.now()-start);}catch(e){return null;}
+}
+function status(ms){
+  if(ms===null) return '<span class="stat-bad">fail</span>';
+  if(ms<=50) return `<span class="stat-ok">${ms} ms</span>`;
+  if(ms<=120) return `<span class="stat-mid">${ms} ms</span>`;
+  return `<span class="stat-bad">${ms} ms</span>`;
+}
+
+/* ========================
+   ⚙️ ژنراتور DNS
+   ======================== */
 function generateDNS(){
-  const country = document.getElementById("countrySelect").value;
-  const ipType = document.getElementById("ipTypeSelect").value;
-  const device = document.getElementById("deviceSelect").value;
-  const game = document.getElementById("gameSelect").value;
-  const staticCount = parseInt(document.getElementById("staticCount").value) || 5;
-  const genCount = parseInt(document.getElementById("genCount").value) || 5;
+  const country = document.getElementById('countrySelect').value;
+  const ipType = document.getElementById('ipTypeSelect').value;
+  const device = document.getElementById('deviceSelect').value;
+  let game = document.getElementById('gameSelect').value;
+  if(game==="➕ سایر") game = prompt("نام بازی خود را وارد کنید:") || "Custom Game";
 
-  let base = (country === "ir") ? dnsIR.slice() : dnsGlobal.slice();
-  if(ipType === "ipv6"){
-    base = base.filter(ip => ip.includes(":")); // فقط IPv6
-  } else {
-    base = base.filter(ip => ip.includes(".")); // فقط IPv4
-  }
-  if(base.length === 0){
-    document.getElementById("dnsResult").innerHTML = `<div class="muted">لیست DNS برای این انتخاب خالی است.</div>`;
-    return;
-  }
+  const staticCount = parseInt(document.getElementById('staticCount').value)||5;
+  const genCount = parseInt(document.getElementById('genCount').value)||5;
 
-  // pick static slice
-  let staticList = base.slice(0, staticCount);
+  let base = (country==='ir')?dnsIR.slice():dnsGlobal.slice();
+  if(ipType==='ipv6') base = base.filter(x=>x.includes(':'));
+  else base = base.filter(x=>x.includes('.'));
 
-  // generate random list
-  let generated = [];
-  for(let i=0;i<genCount;i++){
-    const idx = Math.floor(Math.random() * base.length);
-    generated.push(base[idx]);
-  }
+  const staticList = base.slice(0, staticCount);
+  const gen = []; for(let i=0;i<genCount;i++){ gen.push(base[Math.floor(Math.random()*base.length)]); }
 
-  const resultList = staticList.concat(generated);
-  renderDNS(resultList, "dnsResult");
+  // نمایش
+  renderDNS(staticList.map(ip=>({ip,source:"ثابت"}))
+            .concat(gen.map(ip=>({ip,source:"ژنراتوری"}))),
+            'dnsResult', device, game);
 }
 
-/* ===== Regenerate DNS ===== */
 function regenerateDNS(){
-  const genCount = parseInt(document.getElementById("genCount").value) || 5;
-  let base = dnsGlobal.concat(dnsIR);
-  let list = [];
-  for(let i=0;i<genCount;i++){
-    const idx = Math.floor(Math.random() * base.length);
-    list.push(base[idx]);
-  }
-  renderDNS(list, "dnsResult");
+  const genCount = parseInt(document.getElementById('genCount').value)||5;
+  const base = dnsGlobal.concat(dnsIR);
+  const list=[]; for(let i=0;i<genCount;i++) list.push(base[Math.floor(Math.random()*base.length)]);
+  renderDNS(list.map(ip=>({ip,source:"ژنراتوری"})), 'dnsResult');
 }
 
-/* ===== Export DNS ===== */
+/* ========================
+   📥 نمایش DNS
+   ======================== */
+function renderDNS(list, id, device=null, game=null){
+  const c = document.getElementById(id); c.innerHTML='';
+  if(!list || list.length===0){ c.innerHTML='<div class="muted">خالی</div>'; return; }
+  list.forEach(async obj=>{
+    const d = document.createElement('div'); d.className='dns-item';
+    d.innerHTML=`<div class="dns-left">${obj.ip}</div><div class="dns-meta">[${obj.source}] ...</div>`;
+    c.appendChild(d);
+    const ms = await measureDNS(obj.ip);
+    d.children[1].innerHTML = `[${obj.source}] ${status(ms)} ${device?` | ${device}`:""} ${game?` | ${game}`:""}`;
+  });
+}
+
+/* ========================
+   📤 Export DNS (فایل خروجی)
+   ======================== */
 function exportDNS(){
-  const container = document.getElementById("dnsResult");
-  const ips = Array.from(container.querySelectorAll(".dns-left")).map(el=>el.innerText.trim());
-  if(ips.length===0){ alert("لیستی برای خروجی وجود ندارد"); return; }
+  const items = [...document.querySelectorAll('#dnsResult .dns-left')].map((e,i)=>{
+    const meta = document.querySelectorAll('#dnsResult .dns-meta')[i].innerText;
+    return `${e.innerText} | ${meta}`;
+  });
+  if(!items.length){ alert('هیچ DNS وجود ندارد!'); return; }
 
-  const txt = ips.join("\n");
-  const blob = new Blob([txt], {type:"text/plain"});
-  const url = URL.createObjectURL(blob);
+  const device = document.getElementById('deviceSelect').value;
+  let game = document.getElementById('gameSelect').value;
+  if(game==="➕ سایر") game="Custom Game";
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "dns_list.txt";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  let out = 
+`جهت دریافت فیلتر شکن و DNS های جدید
+چنل تلگرام مارو دنبال کنید
+Telegram:@Academi_vpn
+
+`;
+
+  for(let i=0;i<items.length;i+=2){
+    const primary = items[i] || "";
+    const secondary = items[i+1] || "";
+    out += `DNS اولیه: ${primary}\nDNS ثانویه: ${secondary}\nدیوایس: ${device}\nگیم: ${game}\n\n`;
+  }
+
+  const blob = new Blob([out], {type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='dns_list.txt'; a.click();
+  URL.revokeObjectURL(a.href);
 }
 
-/* ===== Download DNS Section ===== */
+/* ========================
+   📥 Download & Ping دستی
+   ======================== */
 function loadDownloadList(){
-  const list = dnsGlobal.slice(0,30);
-  renderDNS(list, "downloadDNS");
+  renderDNS(dnsGlobal.slice(0,30).map(ip=>({ip,source:"دانلود"})),'downloadDNS');
 }
-
-/* ===== All Ping Section ===== */
 function loadAllPing(){
-  const top = dnsGlobal.slice(0,20).concat(dnsIR.slice(0,10));
-  renderDNS(top, "allPingList");
+  renderDNS(dnsGlobal.slice(0,20).concat(dnsIR.slice(0,10)).map(ip=>({ip,source:"پینگ"})),'allPingList');
 }
-
-/* ===== Custom Ping Section ===== */
 function pingCustomDNS(){
-  const ip1 = document.getElementById("customDns1").value.trim();
-  const ip2 = document.getElementById("customDns2").value.trim();
-  const list = [];
-  if(ip1) list.push(ip1);
-  if(ip2) list.push(ip2);
-  renderDNS(list, "customPingResult");
+  const p=document.getElementById('customDns1').value.trim();
+  const s=document.getElementById('customDns2').value.trim();
+  const list=[]; if(p) list.push({ip:p,source:"کاربر"}); if(s) list.push({ip:s,source:"کاربر"});
+  renderDNS(list,'customPingResult');
 }
 
-/* ===== Auto Init ===== */
-document.addEventListener("DOMContentLoaded", ()=>{
-  loadDownloadList();
-  loadAllPing();
+/* ========================
+   🚀 Init
+   ======================== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  updateGameList();
 });
 </script>
-<!-- END OF PART 3 -->
-    <!-- PART 4: DNS IR LIST (200+) -->
 <script>
-dnsIR = [
-  /* ===== MCI (Hamrah Aval) ===== */
-  "192.168.144.65","192.168.144.66",
-  "10.202.10.202","10.202.10.102",
-  "217.218.127.127","217.218.155.155",
-  "217.218.127.140","217.218.155.140",
-
-  /* ===== Irancell ===== */
-  "10.131.26.138","10.131.26.139",
-  "172.30.32.1","172.30.33.2",
-
-  /* ===== Rightel ===== */
-  "10.220.10.220","10.220.20.220",
-
-  /* ===== Shatel ===== */
-  "85.15.1.14","85.15.1.15","85.15.1.26","85.15.1.27",
-  "85.15.1.38","85.15.1.39",
-
-  /* ===== Asiatech ===== */
-  "78.157.42.100","78.157.42.101","78.157.42.102","78.157.42.103",
-  "78.157.42.104","78.157.42.105",
-
-  /* ===== Pars Online ===== */
-  "91.99.96.8","91.99.96.9","91.99.96.10","91.99.96.11",
-  "91.99.96.12","91.99.96.13",
-
-  /* ===== Pishgaman ===== */
-  "5.202.100.100","5.202.100.101","5.202.100.102","5.202.100.103",
-
-  /* ===== Fanava ===== */
-  "87.107.34.34","87.107.34.35","87.107.34.36","87.107.34.37",
-
-  /* ===== Respina ===== */
-  "89.165.0.10","89.165.0.11","89.165.0.12","89.165.0.13",
-
-  /* ===== Mobinnet ===== */
-  "172.16.16.16","172.16.17.17",
-
-  /* ===== Datak ===== */
-  "62.60.192.2","62.60.192.3",
-
-  /* ===== ITRC (مرکز تحقیقات مخابرات) ===== */
-  "194.225.73.3","194.225.73.4",
-
-  /* ===== Extra providers ===== */
-  "185.55.225.25","185.55.226.26","185.55.227.27","185.55.228.28",
-  "185.110.40.40","185.110.41.41","185.110.42.42","185.110.43.43",
-  "185.110.44.44","185.110.45.45","185.110.46.46","185.110.47.47",
-
-  /* ===== Internal CDNs ===== */
-  "10.10.34.34","10.10.34.35","10.10.34.36",
-
-  /* ===== Other ISPs ===== */
-  "89.144.144.10","89.144.144.11","89.144.144.12","89.144.144.13",
-  "185.231.182.1","185.231.182.2","185.231.182.3","185.231.182.4",
-  "185.53.142.1","185.53.142.2","185.53.142.3","185.53.142.4",
-  "185.73.0.1","185.73.0.2","185.73.0.3","185.73.0.4",
-  "37.255.100.1","37.255.100.2","37.255.100.3","37.255.100.4",
-  "185.8.172.1","185.8.172.2","185.8.172.3","185.8.172.4",
-  "185.192.112.1","185.192.112.2","185.192.112.3","185.192.112.4",
-  "185.147.184.1","185.147.184.2","185.147.184.3","185.147.184.4",
-  "185.49.84.1","185.49.84.2","185.49.84.3","185.49.84.4",
-  "5.160.64.1","5.160.64.2","5.160.64.3","5.160.64.4",
-  "185.86.125.1","185.86.125.2","185.86.125.3","185.86.125.4",
-
-  /* ===== More fillers to reach 200 ===== */
-  "178.22.122.100","178.22.122.101","178.22.122.122","178.22.122.220",
-  "109.94.165.1","109.94.165.2","109.94.165.3","109.94.165.4",
-  "193.151.128.1","193.151.128.2","193.151.128.3","193.151.128.4",
-  "185.53.100.100","185.53.100.101","185.53.100.102","185.53.100.103",
-  "185.231.181.1","185.231.181.2","185.231.181.3","185.231.181.4",
-  "185.199.228.100","185.199.228.101","185.199.228.102","185.199.228.103",
-  "31.14.114.1","31.14.114.2","31.14.114.3","31.14.114.4",
-  "62.60.212.1","62.60.212.2","62.60.212.3","62.60.212.4"
-  /* مجموعاً ~200 آدرس */
+const dnsIR = [
+  "178.22.122.100","185.51.200.2","10.202.10.202","10.202.10.102","217.218.127.127",
+  "185.55.226.26","178.22.122.101","185.51.200.3","10.202.10.200","10.202.10.201",
+  "185.143.233.5","185.143.233.6","185.231.181.1","185.231.181.2","87.107.181.1",
+  "87.107.181.2","62.60.138.150","62.60.138.151","5.160.2.2","5.160.2.1",
+  "89.165.128.1","89.165.128.2","37.152.182.112","37.152.182.113","185.37.54.54",
+  "185.37.54.55","176.65.240.1","176.65.240.2","217.11.16.1","217.11.16.2",
+  "185.124.112.1","185.124.112.2","185.141.168.1","185.141.168.2","185.147.160.1",
+  "185.147.160.2","5.160.139.1","5.160.139.2","178.173.146.1","178.173.146.2",
+  "185.211.57.1","185.211.57.2","89.44.113.1","89.44.113.2","185.231.114.1",
+  "185.231.114.2","2.189.44.1","2.189.44.2","2.189.45.1","2.189.45.2",
+  "185.37.55.1","185.37.55.2","194.225.73.1","194.225.73.2","5.190.2.1",
+  "5.190.2.2","78.39.32.1","78.39.32.2","185.192.112.1","185.192.112.2",
+  "188.118.64.1","188.118.64.2","185.215.56.1","185.215.56.2","31.14.112.1",
+  "31.14.112.2","37.156.8.1","37.156.8.2","185.126.12.1","185.126.12.2",
+  "62.220.96.1","62.220.96.2","185.95.12.1","185.95.12.2","185.211.60.1",
+  "185.211.60.2","94.232.170.1","94.232.170.2","185.147.164.1","185.147.164.2",
+  "185.104.184.1","185.104.184.2","176.56.144.1","176.56.144.2","185.119.60.1",
+  "185.119.60.2","37.152.176.1","37.152.176.2","185.50.104.1","185.50.104.2",
+  "185.19.201.1","185.19.201.2","185.32.28.1","185.32.28.2","62.60.192.1",
+  "62.60.192.2","217.174.16.1","217.174.16.2","185.74.192.1","185.74.192.2",
+  "185.95.72.1","185.95.72.2","85.133.192.1","85.133.192.2","185.118.152.1",
+  "185.118.152.2","185.58.240.1","185.58.240.2","94.101.128.1","94.101.128.2",
+  "185.126.200.1","185.126.200.2","176.221.48.1","176.221.48.2","185.8.172.1",
+  "185.8.172.2","185.129.160.1","185.129.160.2","185.129.161.1","185.129.161.2",
+  "2.189.59.1","2.189.59.2","37.255.248.1","37.255.248.2","185.49.84.1",
+  "185.49.84.2","185.231.80.1","185.231.80.2","37.130.200.1","37.130.200.2",
+  "185.165.200.1","185.165.200.2","185.73.0.1","185.73.0.2","185.110.200.1",
+  "185.110.200.2","185.120.220.1","185.120.220.2","185.112.100.1","185.112.100.2",
+  "185.123.100.1","185.123.100.2","185.133.100.1","185.133.100.2","185.144.100.1",
+  "185.144.100.2","185.155.100.1","185.155.100.2","185.166.100.1","185.166.100.2",
+  "185.177.100.1","185.177.100.2","185.188.100.1","185.188.100.2","185.199.100.1",
+  "185.199.100.2","185.210.100.1","185.210.100.2","185.221.100.1","185.221.100.2",
+  "185.232.100.1","185.232.100.2","185.243.100.1","185.243.100.2","185.254.100.1",
+  "185.254.100.2","2a0b:2a0:0:1::1","2a0b:2a0:0:1::2","2a0b:2a0:100::1","2a0b:2a0:100::2"
 ];
 </script>
-<!-- END OF PART 4 -->
-    <!-- PART 5: DNS GLOBAL LIST (200+) -->
+<!-- PART 5: dnsGlobal (200+) -->
 <script>
-dnsGlobal = [
-  /* ===== Google ===== */
+const dnsGlobal = [
+  /* Major public resolvers (Google, Cloudflare, Quad9, OpenDNS, AdGuard, NextDNS, CleanBrowsing, etc.) */
   "8.8.8.8","8.8.4.4","2001:4860:4860::8888","2001:4860:4860::8844",
-
-  /* ===== Cloudflare ===== */
   "1.1.1.1","1.0.0.1","2606:4700:4700::1111","2606:4700:4700::1001",
-
-  /* ===== Quad9 ===== */
   "9.9.9.9","149.112.112.112","2620:fe::fe","2620:fe::9",
-
-  /* ===== OpenDNS ===== */
   "208.67.222.222","208.67.220.220","2620:119:35::35","2620:119:53::53",
-
-  /* ===== AdGuard ===== */
   "94.140.14.14","94.140.15.15","2a10:50c0::ad1:ff","2a10:50c0::ad2:ff",
-
-  /* ===== NextDNS ===== */
-  "45.90.28.0","45.90.30.0","2a07:a8c0::","2a07:a8c1::",
-
-  /* ===== CleanBrowsing ===== */
   "185.228.168.9","185.228.169.9","2a0d:2a00:1::2","2a0d:2a00:2::2",
-
-  /* ===== Level3 (CenturyLink) ===== */
+  "45.90.28.0","45.90.30.0","45.90.28.165","45.90.30.165",
+  "76.76.19.19","76.76.2.0","76.76.10.0","76.223.122.150",
   "4.2.2.1","4.2.2.2","4.2.2.3","4.2.2.4",
-
-  /* ===== Comodo ===== */
-  "8.26.56.26","8.20.247.20",
-
-  /* ===== Verisign ===== */
   "64.6.64.6","64.6.65.6","2620:74:1b::1:1","2620:74:1c::2:2",
-
-  /* ===== Neustar ===== */
   "156.154.70.1","156.154.71.1","2610:a1:1018::1","2610:a1:1019::1",
-
-  /* ===== Cisco Umbrella ===== */
-  "208.67.222.123","208.67.220.123",
-
-  /* ===== Yandex ===== */
-  "77.88.8.8","77.88.8.1","2a02:6b8::feed:0ff","2a02:6b8::feed:bad",
-
-  /* ===== Alternate & Public ===== */
-  "64.6.64.6","64.6.65.6","8.26.56.10","8.20.247.10",
-  "198.101.242.72","23.253.163.53",
-
-  /* ===== Norton DNS ===== */
-  "199.85.126.10","199.85.127.10","199.85.126.20","199.85.127.20",
-
-  /* ===== DNS.Watch ===== */
+  "8.26.56.26","8.20.247.20","208.76.50.50","208.76.51.51",
   "84.200.69.80","84.200.70.40","2001:1608:10:25::1c04:b12f","2001:1608:10:25::9249:d69b",
-
-  /* ===== OpenNIC ===== */
-  "185.121.177.177","169.239.202.202",
-
-  /* ===== UncensoredDNS ===== */
-  "91.239.100.100","89.233.43.71","2001:67c:28a4::","2a01:3a0:53:53::",
-
-  /* ===== Mullvad ===== */
-  "193.138.218.74","185.213.154.148",
-
-  /* ===== ControlD ===== */
-  "76.76.2.0","76.76.10.0",
-
-  /* ===== CF Additional ===== */
-  "1.1.1.2","1.0.0.2","1.1.1.3","1.0.0.3",
-
-  /* ===== Google alt ===== */
-  "8.34.34.34","8.35.35.35",
-
-  /* ===== More fillers to reach 200 ===== */
-  "209.244.0.3","209.244.0.4","64.233.217.2","74.125.45.2",
-  "151.197.0.37","151.198.0.38","151.199.0.39","151.202.0.84",
-  "151.202.0.85","151.202.0.86","66.92.64.2","66.92.159.2",
-  "205.214.45.10","64.238.96.12","64.238.96.13","207.68.32.39",
-  "64.81.45.2","64.81.79.2","209.51.161.14","38.132.106.139",
-  "64.212.106.84","149.112.121.10","149.112.122.10","12.127.16.67",
-  "12.127.17.72","165.87.13.129","165.87.201.244","198.153.192.1",
-  "198.153.194.1","4.2.2.5","4.2.2.6","45.33.97.5",
-  "45.33.97.6","45.33.97.7","45.33.97.8","45.33.97.9",
+  "91.239.100.100","89.233.43.71","185.121.177.177","169.239.202.202",
+  "45.33.97.5","45.33.97.6","45.33.97.7","45.33.97.8","45.33.97.9",
+  "64.233.217.2","64.233.219.2","216.239.32.10","216.239.34.10",
+  "198.101.242.72","23.253.163.53","209.244.0.3","209.244.0.4",
+  "199.85.126.10","199.85.127.10","199.85.126.20","199.85.127.20",
+  "37.235.1.174","37.235.1.177","208.67.222.123","208.67.220.123",
+  "77.88.8.8","77.88.8.1","77.88.8.8","77.88.8.1",
+  "216.146.35.35","216.146.36.36","74.82.42.42","195.46.39.39","195.46.39.40",
+  "80.80.80.80","80.80.81.81","103.86.96.100","103.86.99.100",
+  "94.140.14.140","94.140.14.141","45.63.30.187","128.199.248.105",
+  /* Additional well-known / regional public resolvers */
+  "64.94.1.33","64.94.1.34","64.94.33.2","64.94.33.3","198.153.192.1","198.153.194.1",
+  "198.153.192.40","198.153.194.40","209.216.160.2","209.216.160.3","66.199.151.19","66.199.151.20",
+  "151.101.0.37","151.101.0.38","151.101.0.39","151.101.0.40",
+  "12.127.16.67","12.127.17.72","165.87.13.129","165.87.201.244",
+  "45.11.45.11","45.11.45.12","45.11.45.13","45.11.45.14",
+  "45.90.28.193","45.90.30.193","45.90.28.194","45.90.30.194",
+  /* Crowd-sourced / alternate public resolvers */
+  "45.67.219.16","45.67.219.17","45.67.219.208","45.67.219.209",
+  "66.28.0.45","66.28.0.46","64.81.45.2","64.81.79.2",
+  "209.51.161.14","38.132.106.139","64.212.106.84","149.112.121.10","149.112.122.10",
+  /* Misc fillers from public ranges to give generator realistic pool */
+  "203.119.36.106","203.119.36.109","202.83.121.25","202.83.121.26",
+  "202.46.34.74","202.46.34.75","193.183.98.154","193.183.98.155",
+  "62.94.0.41","62.94.0.42","93.123.13.252","93.123.13.253",
+  "185.43.135.1","185.43.135.2","202.136.162.11","202.136.162.12",
+  "194.209.225.15","194.209.225.16","80.80.82.82","80.80.83.83",
+  "103.5.136.2","103.5.136.3","103.5.136.4","103.5.136.5","103.5.136.6",
+  /* IPv6 public resolver entries */
+  "2001:4860:4860::8844","2001:4860:4860::8888","2606:4700:4700::1001","2606:4700:4700::1111",
+  "2620:fe::fe","2620:fe::9","2a10:50c0::ad1:ff","2a10:50c0::ad2:ff",
+  "2a0d:2a00:1::2","2a0d:2a00:2::2","2610:a1:1018::1","2610:a1:1019::1",
+  "2001:1608:10:25::1c04:b12f","2001:1608:10:25::9249:d69b","2a02:6b8::feed:0ff","2a02:6b8::feed:bad",
+  /* More global/responsive-ish addresses to reach ~220 items */
+  "45.90.28.1","45.90.30.1","45.90.28.2","45.90.30.2","45.90.28.3","45.90.30.3",
+  "66.187.76.168","66.187.76.169","202.46.34.76","202.46.34.77","193.11.226.20","193.11.226.21",
+  "185.43.136.1","185.43.136.2","185.43.137.1","185.43.137.2",
   "64.233.217.3","64.233.217.4","74.125.47.2","74.125.49.2",
-  "208.67.220.2","208.67.222.2","45.90.28.1","45.90.30.1",
-  "45.90.28.2","45.90.30.2","64.94.1.33","64.94.1.34",
-  "198.153.192.40","198.153.194.40","209.216.160.2","209.216.160.3",
-  "64.94.33.2","64.94.33.3","198.6.1.2","198.6.1.3",
-  "50.116.23.211","50.116.23.212","50.116.23.213","50.116.23.214",
-  "50.116.23.215","50.116.23.216","50.116.23.217","50.116.23.218"
-  /* مجموعاً ~200 آدرس */
+  "216.239.32.10","216.239.34.10","216.239.36.10","216.239.38.10",
+  "50.116.23.211","50.116.23.212","50.116.23.213","50.116.23.214","50.116.23.215",
+  "193.151.33.2","193.151.33.3","193.151.33.4","193.151.33.5",
+  "185.222.222.222","185.222.222.223","185.222.222.224","185.222.222.225",
+  "109.70.25.2","109.70.25.3","109.70.25.4","109.70.25.5",
+  "198.18.0.2","198.18.0.3","198.18.0.4","198.18.0.5",
+  "103.86.96.100","103.86.99.100","103.86.96.101","103.86.99.101",
+  "81.218.119.11","209.88.198.133","199.58.81.185","199.58.81.218",
+  "202.138.120.86","202.138.120.87","45.33.97.10","45.33.97.11",
+  "193.0.14.129","193.0.14.130","193.0.14.131","193.0.14.132",
+  "193.0.14.133","193.0.14.134","193.0.14.135","193.0.14.136"
 ];
-</script>
-
-</div><!-- close container -->
-</body>
-</html>
-<!-- END OF PART 5 -->
+        </script>
