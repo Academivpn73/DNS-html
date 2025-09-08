@@ -10,70 +10,149 @@
     :root{
       --accent1: #00ff88;
       --accent2: #38bdf8;
-      --card-glass: rgba(10,12,20,0.25);   /* شفاف‌تر */
-      --input-blue: rgba(0,123,255,0.5);
-      --input-border: rgba(0,123,255,0.9);
-      --glow-green: rgba(0,255,136,0.85);
+      --card-glass: rgba(10,12,20,0.3);
+      --glass-border: rgba(255,255,255,0.08);
       --dns-green: #00c853;
-      --text-dark: #000000;
       --muted: #c8f7e4;
-      --glass-border: rgba(255,255,255,0.06);
     }
 
     body{
-      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background: url('gaming-bg.jpg') center/cover fixed no-repeat;
-      color: #ecfdf5;
-      padding: 20px;
+      font-family:"Vazirmatn",system-ui,sans-serif;
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      color:#ecfdf5;margin:0;padding:0;
     }
-    .container{max-width:1180px;margin:0 auto;}
-    .header{ text-align:center; margin-bottom:18px; }
+
+    .container{max-width:1180px;margin:0 auto;padding:20px;}
+
+    /* ===== Header ===== */
+    .header{text-align:center;padding:30px 10px;}
     .brand{
-      font-family: "Poppins", sans-serif;
-      font-weight:900;
-      font-size:40px;
-      background: linear-gradient(90deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text; color:transparent;
-      text-shadow: 0 8px 30px rgba(0,0,0,0.55);
+      font-family:"Poppins",sans-serif;font-weight:900;font-size:42px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      -webkit-background-clip:text;color:transparent;
+      text-shadow:0 8px 25px rgba(0,0,0,0.55);
     }
-    .meta{ margin-top:8px; color:var(--muted); font-size:13px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-    .meta a{ color:#bafbe7; font-weight:700; text-decoration:none; }
+    .meta{margin-top:10px;color:var(--muted);font-size:13px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .meta a{color:#bafbe7;font-weight:700;text-decoration:none;}
+
+    /* ===== Cards ===== */
     .card{
-      background: var(--card-glass);
-      border-radius:14px;
-      padding:16px;
-      margin-bottom:16px;
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(8px) saturate(120%);
-      box-shadow: 0 0 25px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.25);
+      background:var(--card-glass);
+      border-radius:14px;padding:18px;margin-bottom:18px;
+      border:1px solid var(--glass-border);
+      backdrop-filter:blur(10px) saturate(120%);
+      box-shadow:0 0 25px rgba(0,0,0,0.45),0 6px 20px rgba(0,0,0,0.25);
     }
+
+    /* ===== Inputs & Buttons ===== */
+    select,input[type=number]{
+      background:linear-gradient(135deg,rgba(0,123,255,0.7),rgba(0,200,255,0.7));
+      border:1px solid rgba(0,123,255,0.9);
+      border-radius:12px;
+      padding:8px 12px;
+      color:#fff;font-weight:bold;
+      outline:none;
+      margin:6px 0;
+      transition:all 0.3s ease;
+    }
+    select:hover,input[type=number]:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 15px rgba(0,200,255,0.7);
+    }
+
     .btn{
-      background: linear-gradient(90deg, var(--accent1), var(--accent2));
-      color:#000; font-weight:800; padding:10px 18px; border-radius:12px; border:none;
-      cursor:pointer;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#000;font-weight:800;padding:10px 20px;border-radius:14px;
+      border:none;cursor:pointer;transition:all 0.3s ease;
     }
-    .dns-left{ font-weight:900; color: var(--dns-green); margin-bottom:8px; }
-    .dns-item{ margin-bottom:12px; padding:10px; border-radius:10px; background:rgba(0,0,0,0.25); }
+    .btn:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(0,255,200,0.8);}
+
+    .dns-item{
+      margin-bottom:12px;padding:10px;border-radius:10px;
+      background:rgba(0,0,0,0.25);
+    }
+    .dns-left{font-weight:900;color:var(--dns-green);margin-bottom:8px;}
+    .muted{color:var(--muted);font-size:13px;}
+
+    /* ===== Hamburger Menu ===== */
+    .hamburger{
+      font-size:28px;
+      cursor:pointer;
+      color:#fff;
+      position:fixed;
+      top:15px;
+      right:20px;
+      z-index:1001;
+    }
+    .sidebar{
+      position:fixed;
+      right:-260px;
+      top:0;
+      width:240px;
+      height:100%;
+      background:rgba(0,0,20,0.95);
+      backdrop-filter:blur(10px);
+      box-shadow:-4px 0 15px rgba(0,0,0,0.4);
+      padding-top:60px;
+      transition:all 0.4s ease;
+      z-index:1000;
+    }
+    .sidebar a{
+      display:block;
+      padding:12px 20px;
+      color:#00e5ff;
+      font-weight:bold;
+      text-decoration:none;
+      transition:all 0.3s ease;
+    }
+    .sidebar a:hover{
+      background:rgba(0,200,255,0.15);
+      padding-right:30px;
+    }
+    .sidebar.open{ right:0; }
+
+    /* ===== Footer ===== */
+    footer{
+      text-align:center;
+      padding:20px;
+      font-size:14px;
+      background:rgba(0,0,0,0.3);
+      border-top:1px solid var(--glass-border);
+    }
+    footer a{color:#00e5ff;text-decoration:none;font-weight:bold;}
+    .social-icons{margin-top:10px;}
+    .social-icons img{width:32px;margin:0 5px;cursor:pointer;}
   </style>
 </head>
 
 <body>
+  <!-- ===== Hamburger ===== -->
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <!-- ===== Sidebar ===== -->
+  <nav id="sidebar" class="sidebar">
+    <a href="#gaming">🎮 Gaming DNS</a>
+    <a href="#download">📥 Download DNS</a>
+    <a href="#best">⚡ Best DNS</a>
+    <a href="#ping">🌐 Ping DNS</a>
+    <a href="#site2">🌍 سایت دوم (بزودی)</a>
+    <a href="#about">ℹ️ درباره ما</a>
+  </nav>
+
   <div class="container">
     <header class="header">
       <div class="brand">🎮 Academi DNS Panel</div>
       <div class="meta">
-        <a href="https://t.me/Academi_vpn" target="_blank">Telegram: @Academi_vpn</a>
-        <span>|</span>
-        <a href="https://t.me/MahdiAGM0" target="_blank">Admin By: @MahdiAGM0</a>
+        <a href="https://t.me/Academi_vpn" target="_blank">کانال ما: @Academi_vpn</a>
         <span>|</span>
         <span>Version: 2.0.0</span>
       </div>
     </header>
 
     <!-- 🎮 Gaming DNS Generator -->
-    <div class="card">
+    <div id="gaming" class="card">
       <h2>🎮 Generate DNS — Gaming</h2>
-
+      <!-- بعداً جاوااسکریپت پارت 2 میاد -->
       <div>
         <label for="countrySelect">کشور:</label>
         <select id="countrySelect">
@@ -117,26 +196,43 @@
     </div>
 
     <!-- 📥 Download DNS -->
-    <div class="card">
+    <div id="download" class="card">
       <h2>📥 Download DNS (Top 30)</h2>
       <button class="btn" onclick="loadDownloadList()">نمایش DNS ها</button>
       <div id="downloadDNS" class="dns-list"></div>
     </div>
 
-    <!-- 🌐 All DNS Ping -->
-    <div class="card">
+    <!-- ⚡ Best DNS -->
+    <div id="best" class="card">
+      <h2>⚡ Best DNS (Auto Select)</h2>
+      <button class="btn" onclick="findBestDNS()">یافتن بهترین DNS ها</button>
+      <div id="bestDNS" class="dns-list"></div>
+    </div>
+
+    <!-- 🌐 Ping DNS (جدا از بقیه و در منو) -->
+    <div id="ping" class="card">
       <h2>🌐 All DNS Ping (Top 30)</h2>
       <button class="btn" onclick="loadAllPing()">نمایش پینگ</button>
       <div id="allPingList" class="dns-list"></div>
     </div>
 
-    <!-- ⚡ Best DNS -->
-    <div class="card">
-      <h2>⚡ Best DNS (Auto Select)</h2>
-      <button class="btn" onclick="findBestDNS()">یافتن بهترین DNS ها</button>
-      <div id="bestDNS" class="dns-list"></div>
+    <!-- ℹ️ درباره ما -->
+    <div id="about" class="card">
+      <h2>ℹ️ درباره ما</h2>
+      <p>سازنده: <b>مهدی</b></p>
+      <p>کانال ما: <a href="https://t.me/Academi_vpn" target="_blank">@Academi_vpn</a></p>
+      <div class="social-icons">
+        <a href="https://t.me/Academi_vpn" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+        </a>
+      </div>
     </div>
-    <script>
+  </div>
+
+  <footer>
+    ساخته شده با ❤️ توسط <b>مهدی</b> | <a href="https://t.me/Academi_vpn" target="_blank">کانال: @Academi_vpn</a>
+  </footer>
+<script>
 /* ========================
    🎮 لیست بازی‌ها
    ======================== */
@@ -223,19 +319,26 @@ function generateDNS(){
   const genCount = parseInt(document.getElementById('genCount').value)||2;
 
   let base = [];
-  if(country==='ir') base = dnsIR.slice();
-  else if(country==='us') base = dnsUS.slice();
-  else if(country==='tr') base = dnsTR.slice();
-  else if(country==='sa') base = dnsSA.slice();
-  else base = dnsGlobal.slice();
+  if(country==='ir') base = dnsIR;
+  else if(country==='us') base = dnsUS;
+  else if(country==='tr') base = dnsTR;
+  else if(country==='sa') base = dnsSA;
+  else base = dnsGlobal;
 
-  const staticList = base.slice(0, staticCount);
-  const gen = []; 
-  for(let i=0;i<genCount;i++){ gen.push(base[Math.floor(Math.random()*base.length)]); }
+  // انتخاب رندوم DNSها
+  const pickRandom = (arr, count, type) => {
+    const chosen = [];
+    for(let i=0; i<count; i++){
+      const ip = arr[Math.floor(Math.random()*arr.length)];
+      chosen.push({ip, source:type});
+    }
+    return chosen;
+  };
 
-  renderDNS(staticList.map(ip=>({ip,source:"ثابت"}))
-            .concat(gen.map(ip=>({ip,source:"ژنراتوری"}))),
-            'dnsResult', device, game, country);
+  const staticList = pickRandom(base, staticCount, "ثابت");
+  const genList = pickRandom(base, genCount, "ژنراتوری");
+
+  renderDNS([...staticList, ...genList], 'dnsResult', device, game, country);
 }
 
 function regenerateDNS(){
@@ -246,15 +349,17 @@ function regenerateDNS(){
   const country = document.getElementById('countrySelect').value;
 
   let base = [];
-  if(country==='ir') base = dnsIR.slice();
-  else if(country==='us') base = dnsUS.slice();
-  else if(country==='tr') base = dnsTR.slice();
-  else if(country==='sa') base = dnsSA.slice();
-  else base = dnsGlobal.slice();
+  if(country==='ir') base = dnsIR;
+  else if(country==='us') base = dnsUS;
+  else if(country==='tr') base = dnsTR;
+  else if(country==='sa') base = dnsSA;
+  else base = dnsGlobal;
 
   const list=[]; 
-  for(let i=0;i<genCount;i++) list.push(base[Math.floor(Math.random()*base.length)]);
-  renderDNS(list.map(ip=>({ip,source:"ژنراتوری"})), 'dnsResult', device, game, country);
+  for(let i=0;i<genCount;i++) 
+    list.push({ip: base[Math.floor(Math.random()*base.length)], source:"ژنراتوری"});
+  
+  renderDNS(list, 'dnsResult', device, game, country);
 }
 
 /* ========================
@@ -278,8 +383,8 @@ function renderDNS(list, id, device=null, game=null, country=null){
       <div class="dns-left">
         <b>گیم:</b> ${game || "-"} <br>
         <b>کشور:</b> ${country || "-"} <br>
-        <b>DNS اولیه:</b> ${primary?primary.ip:"-"} <br>
-        <b>DNS ثانویه:</b> ${secondary?secondary.ip:"-"}
+        <b>DNS اولیه:</b> ${primary?primary.ip:"-"} (${primary?primary.source:""}) <br>
+        <b>DNS ثانویه:</b> ${secondary?secondary.ip:"-"} (${secondary?secondary.source||""})
       </div>
       <div class="dns-meta">⏳ در حال محاسبه پینگ...</div>
     `;
@@ -307,6 +412,10 @@ function loadAllPing(){
 document.addEventListener('DOMContentLoaded', ()=>{
   updateGameList();
 });
+
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
 </script>
 <script>
 /* ========================
@@ -359,75 +468,149 @@ const dnsGlobal = [
   "9.9.9.9","149.112.112.112","2620:fe::fe","2620:fe::9", // Quad9
   "208.67.222.222","208.67.220.220","2620:119:35::35","2620:119:53::53", // OpenDNS
   "94.140.14.14","94.140.15.15","2a10:50c0::ad1:ff","2a10:50c0::ad2:ff", // AdGuard
-  "185.228.168.9","185.228.169.9","45.90.28.0","45.90.30.0", // CleanBrowsing / ControlD
+  "185.228.168.9","185.228.169.9","45.90.28.0","45.90.30.0", // CleanBrowsing
   "76.76.19.19","76.76.2.0","76.76.10.0","76.223.122.150", // NextDNS
   "4.2.2.1","4.2.2.2","4.2.2.3","4.2.2.4", // Level3
   "64.6.64.6","64.6.65.6","2620:74:1b::1:1","2620:74:1c::2:2", // Verisign
   "156.154.70.1","156.154.71.1","2610:a1:1018::1","2610:a1:1019::1", // Neustar
   "8.26.56.26","8.20.247.20","208.76.50.50","208.76.51.51", // Comodo
   "84.200.69.80","84.200.70.40","2001:1608:10:25::1c04:b12f","2001:1608:10:25::9249:d69b", // DNS.WATCH
-  "91.239.100.100","89.233.43.71","185.121.177.177","169.239.202.202", // Misc resolvers
-  "216.239.32.10","216.239.34.10","216.239.36.10","216.239.38.10", // Google anycast
-  "209.244.0.3","209.244.0.4","199.85.126.10","199.85.127.10","199.85.126.20","199.85.127.20", // Verizon + Norton
+  "91.239.100.100","89.233.43.71","185.121.177.177","169.239.202.202", // Misc
+  "216.239.32.10","216.239.34.10","216.239.36.10","216.239.38.10", // Google Anycast
+  "209.244.0.3","209.244.0.4","199.85.126.10","199.85.127.10","199.85.126.20","199.85.127.20", // Verizon+Norton
   "37.235.1.174","37.235.1.177","208.67.222.123","208.67.220.123", // OpenDNS Family
   "77.88.8.8","77.88.8.1", // Yandex
-  "216.146.35.35","216.146.36.36","74.82.42.42" // DynDNS + Hurricane
+  "216.146.35.35","216.146.36.36","74.82.42.42" // DynDNS+Hurricane
 ];
 </script>
 <script>
 /* ========================
-   🇺🇸 DNS های آمریکا (USA)
+   🇺🇸 DNS های آمریکا
    ======================== */
 const dnsUS = [
-  "8.8.8.8","8.8.4.4",                  // Google
-  "1.1.1.1","1.0.0.1",                  // Cloudflare
-  "9.9.9.9","149.112.112.112",          // Quad9
-  "208.67.222.222","208.67.220.220",    // OpenDNS
-  "64.6.64.6","64.6.65.6",              // Verisign
-  "12.127.16.67","12.127.17.72",        // AT&T
+  "8.8.8.8","8.8.4.4", // Google
+  "1.1.1.1","1.0.0.1", // Cloudflare
+  "9.9.9.9","149.112.112.112", // Quad9
+  "208.67.222.222","208.67.220.220", // OpenDNS
   "4.2.2.1","4.2.2.2","4.2.2.3","4.2.2.4", // Level3
-  "76.76.19.19","76.76.2.0",            // NextDNS
-  "64.233.217.2","64.233.219.2",        // Google US Nodes
-  "205.171.3.65","205.171.2.65",        // Qwest
-  "209.244.0.3","209.244.0.4",          // Verizon
-  "64.94.1.33","64.94.1.34",            // UltraDNS
-  "45.90.28.0","45.90.30.0",            // ControlD
-  "74.82.42.42","216.146.35.35","216.146.36.36", // Dyn
-  "198.101.242.72","23.253.163.53",     // Rackspace
-  "50.116.23.211","50.116.23.212","50.116.23.213" // Linode
+  "64.6.64.6","64.6.65.6", // Verisign
+  "8.26.56.26","8.20.247.20", // Comodo
+  "216.146.35.35","216.146.36.36", // DynDNS
+  "74.82.42.42","209.244.0.3","209.244.0.4", // Hurricane + Verizon
+  "199.85.126.10","199.85.127.10","199.85.126.20","199.85.127.20", // Norton
+  "156.154.70.1","156.154.71.1", // Neustar
+  "45.90.28.0","45.90.30.0", // CleanBrowsing
+  "76.76.19.19","76.76.2.0", // NextDNS
+  "216.239.32.10","216.239.34.10","216.239.36.10","216.239.38.10"
 ];
 
 /* ========================
-   🇹🇷 DNS های ترکیه (Turkey)
+   🇹🇷 DNS های ترکیه
    ======================== */
 const dnsTR = [
-  "195.175.39.39","195.175.39.40",      // Türk Telekom
-  "212.156.4.20","212.156.4.21",        // TTNet
-  "193.140.83.55","193.140.83.56",      // TÜBİTAK
-  "195.46.39.39","195.46.39.40",        // Comodo TR
-  "213.74.19.35","213.74.19.36",        // Superonline
-  "85.95.22.10","85.95.22.11",          // Millenicom TR
-  "195.142.110.1","195.142.110.2",      // UlakNet
-  "212.156.4.2","212.156.4.3",          // TTNet Alt
-  "213.14.227.80","213.14.227.81",      // Vodafone TR
-  "185.37.54.54","185.37.54.55"         // Regional Anycast
+  "195.175.39.49","195.175.39.50", // Turk Telekom
+  "195.175.39.39","195.175.39.40", // TTNET
+  "212.156.4.20","212.156.4.21", // Superonline
+  "212.154.100.18","212.154.100.19", // Kablonet
+  "212.174.112.50","212.174.112.51", // Uydunet
+  "81.212.29.1","81.212.29.2", // TTNET alt
+  "85.95.224.1","85.95.224.2", // Millenicom TR
+  "82.222.169.49","82.222.169.50", // Vodafone TR
+  "213.74.12.1","213.74.12.2", // Turkcell
+  "195.155.132.1","195.155.132.2", // DorukNet
+  "212.58.224.1","212.58.224.2" // Local ISP
 ];
 
 /* ========================
-   🇸🇦 DNS های عربستان (Saudi Arabia)
+   🇸🇦 DNS های عربستان سعودی
    ======================== */
 const dnsSA = [
-  "86.51.92.0","86.51.92.1",            // STC
-  "213.181.92.1","213.181.92.2",        // STC Secondary
-  "185.24.216.1","185.24.216.2",        // Zain KSA
-  "91.144.8.1","91.144.8.2",            // Mobily
-  "212.26.16.1","212.26.16.2",          // ITC KSA
-  "89.211.244.1","89.211.244.2",        // GO Telecom
-  "94.97.128.1","94.97.128.2",          // STC Datacenter
-  "195.229.241.222","195.229.241.221",  // Etisalat MENA
-  "185.40.64.1","185.40.64.2",          // Salam ISP
-  "185.72.192.1","185.72.192.2"         // Local IX
+  "212.26.18.1","212.26.18.2", // STC
+  "212.118.0.1","212.118.0.2", // Zain
+  "84.235.6.1","84.235.6.2", // Mobily
+  "87.101.248.1","87.101.248.2", // ITC
+  "82.147.192.1","82.147.192.2", // SaudiNet
+  "185.1.76.1","185.1.76.2", // Hosting SA
+  "212.26.20.1","212.26.20.2",
+  "213.181.85.1","213.181.85.2",
+  "82.205.224.1","82.205.224.2",
+  "188.48.32.1","188.48.32.2",
+  "91.144.64.1","91.144.64.2",
+  "195.12.96.1","195.12.96.2",
+  "37.99.160.1","37.99.160.2",
+  "217.17.36.1","217.17.36.2",
+  "83.101.0.1","83.101.0.2",
+  "84.235.7.1","84.235.7.2",
+  "188.48.64.1","188.48.64.2"
 ];
+</script>
+<script>
+/* ========================
+   🎲 ژنراتور آی‌پی رندوم
+   ======================== */
+
+// توابع کمکی برای ساخت آی‌پی
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function randomIPv4(base){return base+"."+rand(1,254);}
+function randomIPv6(prefix){return prefix+rand(1000,9999).toString(16);}
+
+/* ========================
+   🇮🇷 ایران
+   ======================== */
+function randomDNS_IR(){
+  const bases = [
+    "5.160.2","5.160.139","37.152.176","37.152.182",
+    "185.51.200","185.37.54","185.37.55","185.143.233",
+    "185.231.181","185.147.160","185.147.164","185.211.57",
+    "185.120.220","185.104.184","185.19.201","185.32.28"
+  ];
+  return randomIPv4(bases[Math.floor(Math.random()*bases.length)]);
+}
+
+/* ========================
+   🇺🇸 آمریکا
+   ======================== */
+function randomDNS_US(){
+  const bases = [
+    "8.8.8","8.8.4","4.2.2","64.6.64","64.6.65",
+    "208.67.222","208.67.220","156.154.70","156.154.71"
+  ];
+  return randomIPv4(bases[Math.floor(Math.random()*bases.length)]);
+}
+
+/* ========================
+   🇹🇷 ترکیه
+   ======================== */
+function randomDNS_TR(){
+  const bases = [
+    "195.175.39","212.156.4","212.154.100","212.174.112",
+    "81.212.29","85.95.224","82.222.169","213.74.12"
+  ];
+  return randomIPv4(bases[Math.floor(Math.random()*bases.length)]);
+}
+
+/* ========================
+   🇸🇦 عربستان سعودی
+   ======================== */
+function randomDNS_SA(){
+  const bases = [
+    "212.26.18","212.118.0","84.235.6","87.101.248",
+    "82.147.192","82.205.224","91.144.64","195.12.96",
+    "37.99.160","188.48.32"
+  ];
+  return randomIPv4(bases[Math.floor(Math.random()*bases.length)]);
+}
+
+/* ========================
+   🎮 انتخاب ژنراتوری بر اساس کشور
+   ======================== */
+function generateRandomByCountry(country){
+  if(country==="ir") return randomDNS_IR();
+  if(country==="us") return randomDNS_US();
+  if(country==="tr") return randomDNS_TR();
+  if(country==="sa") return randomDNS_SA();
+  return "8.8.8.8"; // fallback
+}
 </script>
 <script>
 async function findBestDNS(){
@@ -443,10 +626,10 @@ async function findBestDNS(){
     results.push({ip,ms});
   }
 
-  // فیلتر زیر 100ms و مرتب‌سازی
-  const good = results.filter(r=>r.ms!==null && r.ms<100)
+  // فیلتر زیر 150ms و مرتب‌سازی
+  const good = results.filter(r=>r.ms!==null && r.ms<150)
                       .sort((a,b)=>a.ms-b.ms)
-                      .slice(0,10); // بهترین 10 تا
+                      .slice(0,15); // بهترین 15 تا
 
   c.innerHTML = "";
   if(good.length===0){
@@ -457,6 +640,8 @@ async function findBestDNS(){
   good.forEach((r,idx)=>{
     const d = document.createElement("div");
     d.className="dns-item";
+    d.style.animation = `fadeIn 0.4s ease ${idx*0.1}s forwards`;
+    d.style.opacity = "0";
     d.innerHTML = `
       <div class="dns-left">
         <b>#${idx+1}</b> ${r.ip}
@@ -466,6 +651,15 @@ async function findBestDNS(){
     c.appendChild(d);
   });
 }
+
+/* ✨ انیمیشن fadeIn */
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
